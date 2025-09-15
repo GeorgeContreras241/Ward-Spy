@@ -1,15 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cinzel, Caudex, Montserrat } from 'next/font/google';
+import { Navbar } from "@/app/components/ui/Nanvar";
+import { Search } from "@/app/components/ui/Search";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const cinzel = Cinzel({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-cinzel',
+  display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const caudex = Caudex({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-caudex',
+  display: 'swap',
+});
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-montserrat',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -23,10 +36,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${cinzel.variable} ${caudex.variable} ${montserrat.variable} font-sans`}
       >
+        <div className="flex flex-col gap-2">
+          <Navbar />
+          <Search />
+        </div>
         {children}
       </body>
     </html>
