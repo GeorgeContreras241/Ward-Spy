@@ -111,6 +111,7 @@ export const PlayerList = ({ player }) => {
             {/* Items */}
             <div className="grid md:grid-cols-3 grid-cols-7 gap-0.5 ml-1">
                 {items.map((item, i) => (
+                    item != 0 ?
                     <div key={i} className="w-5 h-5 bg-gray-700 rounded-sm overflow-hidden">
                         {item && (
                             <img
@@ -120,6 +121,7 @@ export const PlayerList = ({ player }) => {
                             />
                         )}
                     </div>
+                    :   <div key={i} className='h-5 w-5 rounded bg-gray-900 border border-gray-700' />
                 ))}
             </div>
             <div>

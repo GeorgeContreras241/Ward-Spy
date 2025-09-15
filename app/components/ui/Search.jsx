@@ -2,29 +2,34 @@
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { useSumonnerStore } from '@/app/store/SummonerStore'
+import { useFetch } from '@/app/hooks/useFetch'
 
 
 export const Search = () => {
-  const router = useRouter() 
-  const { setVersion, seturlListSpell,  seturlListChamp, setDataNameTag} = useSumonnerStore()
-
+  const router = useRouter()
+  const { setVersion, seturlListSpell, seturlListChamp, setDataNameTag } = useSumonnerStore()
   const [riotId, setRiotId] = useState('')
   const [error, setError] = useState('')
   const [dataName, dataTag] = riotId.split('#')
 
-  /*Carga de Imagenes de Data Dragon */
-  const getChampList = async () => {
-    const versionsRes = await fetch("https://ddragon.leagueoflegends.com/api/versions.json")
-    if (!versionsRes.ok) {
-      throw new Error("No se pudo obtener la lista de versiones")
-    }
-    const versionData = await versionsRes.json()
-    const lastVersion = versionData[0]
-    setVersion(lastVersion)
-  }
+  const { data: dragonData, error: fetchError } = useFetch({ 
+    stringUrl: "/api/dataDragon" 
+  })
+
   useEffect(() => {
-    getSpellList()
-  }, [])
+    if (dragonData) {
+      seturlListSpell(dragonData.dataSpell)
+      seturlListChamp(dragonData.dataChamp)
+      setVersion(dragonData.version)
+    }
+  }, [dragonData])
+
+  useEffect(() => {
+    if (fetchError) {
+      console.error('Error al cargar datos de DataDragon:', fetchError)
+      setError('Error al cargar los datos del juego. Intenta de nuevo más tarde.')
+    }
+  }, [fetchError])
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -37,22 +42,8 @@ export const Search = () => {
       return
     }
     setError('')
-    setDataNameTag({dataName, dataTag})
+    setDataNameTag({ dataName, dataTag })
     router.push(`/summoner/${dataName}-${dataTag}`)
-
-  }
-
-
-  /*Carga de hechizos de Data Dragon */
-  const getSpellList = async () => {
-    const versionsRes = await fetch("/api/dataDragon")
-    if (!versionsRes.ok) {
-      throw new Error("No se pudo obtener la lista de versiones")
-    }
-    const data = await versionsRes.json()
-    seturlListSpell(data.dataSpell)
-    seturlListChamp(data.dataChamp)
-    setVersion(data.version)
   }
 
 
@@ -70,8 +61,8 @@ export const Search = () => {
         itemType='https://schema.org/SearchAction'
       >
         <h1 className='text-xl pb-3 font-caudex font-bold' itemProp='name'>
-           WARD SPY
-        </h1> 
+          WARD SPY
+        </h1>
         <p className='text-neutral-400 text-[.8rem] font-montserrat font-light' itemProp='description'>
           Busca y analiza perfiles de League of Legends. Revisa estadísticas,
           historial de partidas y más para mejorar tu rendimiento en el juego.
@@ -85,7 +76,7 @@ export const Search = () => {
           role='search'
           itemProp='potentialAction'
           itemScope
-           itemType='https://schema.org/SearchAction'
+          itemType='https://schema.org/SearchAction'
         >
           <div className='w-full border p-1.5 border-gray-600 rounded'>
             <label
