@@ -8,7 +8,7 @@ export const MatchHistory = () => {
   const { dataSumonner, version } = useSumonnerStore()
 
   return (
-    <div className="max-w-5xl w-full mx-auto bg-[#0f111a] text-white flex flex-col font-sans pb-6">
+    <div className="max-w-5xl w-full mx-auto text-white flex flex-col pb-6">
       <div className="grid grid-cols-1 h-full md:grid-cols-2 mt-2  gap-2 w-full">
         <InfoSumonner dataSumonner={dataSumonner} version={version} />
         <RecentGames dataSumonner={dataSumonner} version={version} />

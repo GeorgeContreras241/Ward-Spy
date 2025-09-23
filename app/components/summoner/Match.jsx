@@ -19,7 +19,7 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
   const matchDurationMinutes = (dataPlayer.matchDuration || 20 * 60) / 60;
   const csPerMin = (dataPlayer.totalMinionsKilled / matchDurationMinutes).toFixed(1);
 
-  const teamColor = dataPlayer.teamId === 100 ? 'border-blue-400' : 'border-red-400';
+  const teamColor = dataPlayer.teamId === 100 ? 'border-primary' : 'border-destructive';
   const winColor = dataPlayer.win ? 'bg-green-700/30 ' : 'bg-red-700/30';
 
 
@@ -37,26 +37,26 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
   return (
     <section className="flex flex-col gap-2">
       <article
-        className={`flex flex-row items-center justify-around px-2 gap-2 py-1.5 md:py-0 rounded-lg border-l-4
-         ${teamColor} ${winColor} ${isCurrentPlayer ? 'ring-2 ring-yellow-400' : ''} cursor-pointer  transition-colors`}
+        className={`flex flex-row items-center justify-around px-2 gap-2 py-1.5 md:py-0 rounded-[var(--radius)] border-l-4
+         ${teamColor} ${winColor} ${isCurrentPlayer ? 'ring-2 ring-ring' : ''} cursor-pointer transition-colors`}
       >
-        <section className="flex flex-row  gap-2">
+        <section className="flex flex-row gap-2">
           {/*Champion Image*/}
           <div className='relative md:h-14 md:w-14 h-10 w-10'>
             <img
               src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${dataPlayer?.championName}.png` || '/default-champion.png'}
               alt={dataPlayer?.championName || 'Champion'}
-              className='w-full h-full object-cover aspect-auto border-2 rounded-full border-yellow-500/50'
+              className='w-full h-full object-cover aspect-square border rounded-full border-border'
               onError={(e) => {
                 if (e.target.src.endsWith('default-champion.png')) return;
                 e.target.src = '/default-champion.png';
               }}
             />
-            <span className='absolute bottom-0 right-0 bg-black/80 text-xs px-1 rounded-tl'>{dataPlayer.champLevel}</span>
+            <span className='absolute bottom-0 right-0 bg-accent/80 text-[10px] px-1 rounded-tl text-foreground'>{dataPlayer.champLevel}</span>
           </div>
           {/*Summoners*/}
           <div className='flex flex-col gap-1'>
-            <div className='md:h-6 md:w-6 h-5 w-5 rounded overflow-hidden bg-gray-800'>
+            <div className='md:h-6 md:w-6 h-5 w-5 rounded overflow-hidden bg-muted'>
               {urlListSpell && dataPlayer.summoner1Id && (
                 <img
                   src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${urlListSpell[dataPlayer.summoner1Id] || 'SummonerFlash'}`}
@@ -69,7 +69,7 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
                 />
               )}
             </div>
-            <div className='h-6 w-6 rounded overflow-hidden bg-gray-800'>
+            <div className='h-6 w-6 rounded overflow-hidden bg-muted'>
               {urlListSpell && dataPlayer.summoner2Id && (
                 <img
                   src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${urlListSpell[dataPlayer.summoner2Id] || 'SummonerHeal'}`}
@@ -85,25 +85,25 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
           </div>
         </section>
         {/* KDA */}
-        <section className='flex flex-col items-center min-w-[100px] '>
+        <section className='flex flex-col items-center min-w-[100px]'>
           <div className='flex items-center gap-1'>
-            <span className="font-bold text-blue-400 text-xs">{gameMode ? gameMode : 'Unknown'}</span>
+            <span className="font-bold text-primary text-xs">{gameMode ? gameMode : 'Unknown'}</span>
           </div>
           <div className='flex items-center gap-1 text-md md:text-xl'>
             <span className='font-bold'>{dataPlayer?.kills}</span>
-            <span className='text-gray-400'>/</span>
-            <span className={`font-bold ${dataPlayer?.deaths > 5 ? 'text-red-500' : ''}`}>
+            <span className='text-muted-foreground'>/</span>
+            <span className={`font-bold ${dataPlayer?.deaths > 5 ? 'text-destructive' : ''}`}>
               {dataPlayer?.deaths}
             </span>
-            <span className='text-gray-400'>/</span>
+            <span className='text-muted-foreground'>/</span>
             <span className='font-bold'>{dataPlayer?.assists}</span>
           </div>
           <div className='text-xs'>
-            <span className={`font-semibold ${parseFloat(kdaRatio) >= 3 ? 'text-yellow-400' : ''}`}>
+            <span className={`font-semibold ${parseFloat(kdaRatio) >= 3 ? 'text-primary' : 'text-foreground'}`}>
               {kdaRatio}:1 KDA
             </span>
           </div>
-          <div className='text-xs text-gray-400'>
+          <div className='text-xs text-muted-foreground'>
             {killParticipation}% KP
           </div>
         </section>
@@ -111,23 +111,23 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
         {/* Stats */}
         <section className='flex flex-col text-xs min-w-[80px]'>
           <div className='flex justify-between'>
-            <span className='text-gray-400'>CS:</span>
+            <span className='text-muted-foreground'>CS:</span>
             <span>{dataPlayer?.totalMinionsKilled} ({csPerMin})</span>
           </div>
           <div className='flex justify-between'>
-            <span className='text-gray-400'>Gold:</span>
+            <span className='text-muted-foreground'>Gold:</span>
             <span>{(dataPlayer?.goldEarned / 1000).toFixed(1)}k</span>
           </div>
           <div className='flex justify-between'>
-            <span className='text-gray-400'>DMG:</span>
+            <span className='text-muted-foreground'>DMG:</span>
             <span>{(dataPlayer?.totalDamageDealtToChampions / 1000).toFixed(1)}k</span>
           </div>
           <div className='flex justify-between'>
-            <span className='text-gray-400'>Time:</span>
+            <span className='text-muted-foreground'>Time:</span>
             <span>{gameDurationMinutes} min</span>
           </div>
-          <div className='flex justify-between text-xs text-gray-300'>
-            <span className="text-xs font-montserrat tracking-wide text-center w-full">{gameCreation}</span>
+          <div className='flex justify-between text-xs text-muted-foreground'>
+            <span className="text-xs tracking-wide text-center w-full">{gameCreation}</span>
           </div>
 
         </section>
@@ -138,26 +138,26 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
               team1.map((item, index) => (
                 <li key={index} className="flex flex-row-reverse items-center  gap-1">
                   <img src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${item?.championName}.png`}
-                    className="h-4.5 w-4.5 border border-gray-700 rounded-lg" alt={items?.championName} title={item?.championName} />
+                    className="h-4.5 w-4.5 border border-border rounded-[var(--radius)]" alt={items?.championName} title={item?.championName} />
                   <span
-                    className={`text-[.7rem] h-[10px] flex items-center  text-neutral-300 font-montserrat w-25 truncate tracking-wide ${item.riotIdGameName === dataPlayer.riotIdGameName ?
-                      'text-yellow-400 rounded-xs font-semibold' : ''}`}
+                    className={`text-[.7rem] h-[10px] flex items-center text-foreground w-25 truncate tracking-wide ${item.riotIdGameName === dataPlayer.riotIdGameName ?
+                      'text-primary font-semibold' : 'text-muted-foreground'}`}
                     title={item.riotIdGameName}
                   >{item.riotIdGameName}</span>
                 </li>
               ))
             }
           </ul>
-          <div className="w-[1px] bg-gray-200/50 "></div>
+          <div className="w-[1px] bg-border/50 "></div>
           <ul className="flex flex-col justify-center">
             {
               team2.map((item, index) => (
                 <li key={index} className="flex flex-row items-center gap-2">
                   <img src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${item?.championName}.png`}
-                    className="h-4.5 w-4.5 border border-gray-700 rounded-lg" alt={item?.championName} title={item?.championName} />
+                    className="h-4.5 w-4.5 border border-border rounded-[var(--radius)]" alt={item?.championName} title={item?.championName} />
                   <span
-                    className={`flex text-[.7rem] h-[10px] flex items-center  text-neutral-300 font-montserrat w-25 truncate tracking-wide ${item.riotIdGameName === dataPlayer.riotIdGameName ?
-                      'text-yellow-400 rounded-xs font-semibold' : ''}`}
+                    className={`flex text-[.7rem] h-[10px] items-center text-foreground w-25 truncate tracking-wide ${item.riotIdGameName === dataPlayer.riotIdGameName ?
+                      'text-primary font-semibold' : 'text-muted-foreground'}`}
                     title={item.riotIdGameName}
                   >{item.riotIdGameName}</span>
                 </li>
@@ -172,7 +172,7 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
             {items.slice(0, 6).map((item, index) => {
               if (item != 0) {
                 return (
-                  <div key={index} className='h-6 w-6 md:h-7 md:w-7 lg:h-9 lg:w-9 rounded overflow-hidden bg-gray-800'>
+                  <div key={index} className='h-6 w-6 md:h-7 md:w-7 lg:h-9 lg:w-9 rounded overflow-hidden bg-muted'>
                     <img
                       src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/item/${item}.png`}
                       className='w-full h-full object-cover'
@@ -182,12 +182,12 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
                 )
               } else {
                 return (
-                  <div key={index} className='h-6 w-6 md:h-7 md:w-7 lg:h-9 lg:w-9 rounded bg-gray-900 border border-gray-700' />
+                  <div key={index} className='h-6 w-6 md:h-7 md:w-7 lg:h-9 lg:w-9 rounded bg-secondary border border-border' />
                 )
               }
             })}
             {Array.from({ length: 6 - Math.min(6, items.length) }).map((_, index) => (
-              <div key={`empty-${index}`} className='h-6 w-6 md:h-7 md:w-7 lg:h-9 lg:w-9 rounded bg-gray-900 border border-gray-700' />
+              <div key={`empty-${index}`} className='h-6 w-6 md:h-7 md:w-7 lg:h-9 lg:w-9 rounded bg-secondary border border-border' />
             ))}
           </div>
 
@@ -195,7 +195,7 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
           <aside className="flex flex-col items-center gap-3">
             <div className='flex  justify-center mt-1'>
               {items[6] ? (
-                <div className='h-5 w-5 md:h-6 md:w-6 lg:h-8 lg:w-8 rounded overflow-hidden bg-gray-800'>
+                <div className='h-5 w-5 md:h-6 md:w-6 lg:h-8 lg:w-8 rounded overflow-hidden bg-muted'>
                   <img
                     src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/item/${items[6]}.png`}
                     className='w-full h-full object-cover'
@@ -204,13 +204,13 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
                 </div>
 
               ) : (
-                <div className='h-6 w-6 md:h-7 md:w-7 lg:h-9 lg:w-9 rounded bg-gray-900 border border-gray-700' />
+                <div className='h-6 w-6 md:h-7 md:w-7 lg:h-9 lg:w-9 rounded bg-secondary border border-border' />
               )}
             </div>
             <button className="" onClick={() => setShow(!show)}>
               {show ?
-                <IoIosArrowUp className="w-5 h-5 cursor-pointer hover:text-yellow-400 hover:scale-105 transition-all" />
-                : <IoIosArrowDown className="w-5 h-5 cursor-pointer hover:text-yellow-400 hover:scale-105 transition-all" />}
+                <IoIosArrowUp className="w-5 h-5 cursor-pointer hover:text-primary hover:scale-105 transition-all" />
+                : <IoIosArrowDown className="w-5 h-5 cursor-pointer hover:text-primary hover:scale-105 transition-all" />}
             </button>
           </aside>
 

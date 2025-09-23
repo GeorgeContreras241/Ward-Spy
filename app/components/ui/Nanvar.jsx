@@ -12,8 +12,8 @@ export const Navbar = () => {
   }
 
   return (
-    <nav className='bg-gray-900/80  backdrop-blur-sm fixed w-full'>
-      <div className='flex justify-between items-center p-2 h-16 max-w-5xl w-full mx-auto px-4'>
+    <nav className='bg-background border-b border-border font-mono'>
+      <div className='text-font-serif flex justify-between items-center p-2 h-16 max-w-5xl w-full mx-auto px-4'>
         <Link href="/" className="font-caudex text-2xl font-bold text-white hover:opacity-90">
           Lolcito Espia
         </Link>

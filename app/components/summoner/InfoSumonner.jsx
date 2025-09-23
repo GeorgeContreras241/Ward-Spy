@@ -1,9 +1,10 @@
 import { League  } from "@/app/components/ui/League"
+
 export const InfoSumonner = ({ dataSumonner }) => {
     return (
-        <aside className=" w-full h-fit bg-[#292727] p-4 space-y-2">
-            <article className="bg-[#1e1a22] p-3 rounded-lg border-l-4 border-purple-600">
-                <div className="flex items-center gap-3">
+        <aside className=" w-full h-fit bg-card border border-border rounded-[0.5rem] p-4 space-y-2">
+            <article className="bg-secondary p-3 rounded-[var(--radius)] border-l-4 border-purple-600">
+                <div className="flex items-center gap-2">
                     <div className="relative">
                         <img
                             src={`https://ddragon.leagueoflegends.com/cdn/15.16.1/img/profileicon/${dataSumonner?.summoner.profileIconId}.png`}

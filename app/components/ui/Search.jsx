@@ -49,7 +49,7 @@ export const Search = () => {
 
   return (
     <section
-      className="mt-20 max-w-5xl w-full mx-auto flex lg:flex-row flex-col"
+      className="bg-card  mt-5 rounded-[var(--radius)] shadow-shadow-2xs max-w-5xl w-full mx-auto flex lg:flex-row flex-col border border-border"
       itemScope
       itemType='https://schema.org/SearchAction'
       aria-label='Buscador de perfiles de League of Legends'
@@ -60,10 +60,10 @@ export const Search = () => {
         itemScope
         itemType='https://schema.org/SearchAction'
       >
-        <h1 className='text-xl pb-3 font-caudex font-bold' itemProp='name'>
+        <h1 className='text-card-foreground text-xl pb-3 font-caudex font-bold' itemProp='name'>
           WARD SPY
         </h1>
-        <p className='text-neutral-400 text-[.8rem] font-montserrat font-light' itemProp='description'>
+        <p className='text-popover-foreground text-[.8rem] font-montserrat font-light' itemProp='description'>
           Busca y analiza perfiles de League of Legends. Revisa estadísticas,
           historial de partidas y más para mejorar tu rendimiento en el juego.
         </p>
@@ -78,7 +78,7 @@ export const Search = () => {
           itemScope
           itemType='https://schema.org/SearchAction'
         >
-          <div className='w-full border p-1.5 border-gray-600 rounded'>
+          <div className='w-full border p-1.5 border-border rounded-[var(--radius)] shadow-shadow-xs'>
             <label
               htmlFor='riotIdInput'
               className='px-1.5 font-bold text-xs text-neutral-300 font-montserrat'
@@ -90,7 +90,7 @@ export const Search = () => {
               id='riotIdInput'
               name='riotId'
               type='text'
-              className='px-2 py-1 outline-none w-full text-xs placeholder:text-gray-500 
+              className='px-2 py-1 outline-none w-full text-xs placeholder:text-input rounded-[var(--radius)]
               placeholder:text-xs bg-dark-secondary text-white focus:bg-dark-secondary/80 
                transition-colors duration-200 font-montserrat tracking-widest'
               placeholder='GameName#TAG'
@@ -112,7 +112,9 @@ export const Search = () => {
             </span>
             <button
               type='submit'
-              className='bg-white text-black text-xs font-extrabold px-2 py-1 w-24 rounded font-montserrat cursor-pointer'
+              className='bg-primary text-primary-foreground text-xs font-extrabold px-12 py-2 
+              border border-border rounded-[0.5rem] shadow-shadow-xs transition-colors duration-200 
+              hover:bg-primary/80 hover:text-primary-foreground cursor-pointer'
               aria-label='Buscar perfil'
               itemProp='potentialAction'
               onClick={handleSubmit}

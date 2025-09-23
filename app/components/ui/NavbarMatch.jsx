@@ -1,16 +1,18 @@
-
+import { Button } from "@/components/ui/button";
 
 export const NavbarMatch = ({ setRouterPath }) => {
     return (
         <nav
-            className="max-w-4xl w-full mx-auto bg-dark-secondary text-white flex flex-row items-center justify-between font-sans p-2 mt-2">
-            <button className="font-bold text-sm cursor-pointer bg-blue-800 md:px-6  px-2 py-1 rounded-lg hover:bg-blue-700"
-                onClick={() => setRouterPath(1)}>Match History</button>
+            className="max-w-5xl w-full border border-border rounded-[0.5rem] mx-auto bg-dark-secondary text-white 
+            flex flex-row items-center justify-between font-sans px-6 py-2 mt-2">
+            <Button className="font-bold text-xs cursor-pointer rounded-[0.5rem] px-8"
+                onClick={() => setRouterPath(1)}>Match History</Button>
             <div className="flex flex-row gap-6">
-                <button className="font-bold text-sm cursor-pointer bg-blue-800 md:px-6  px-2 py-1 rounded-lg hover:bg-blue-700"
-                    onClick={() => setRouterPath(2)}>Live Game</button>
-                <button className="font-bold text-sm cursor-pointer bg-blue-800 md:px-6  px-2 py-1 rounded-lg hover:bg-blue-700"
-                    onClick={() => setRouterPath(3)}>Clash</button>
+                <Button className="font-bold text-xs cursor-pointer rounded-[0.5rem] px-6"
+                    onClick={() => setRouterPath(2)}>Live Game</Button>
+                <Button className="font-bold text-xs cursor-pointer rounded-[0.5rem] px-6"
+                    onClick={() => setRouterPath(3)}>Clash</Button>
+
             </div>
         </nav>
     )

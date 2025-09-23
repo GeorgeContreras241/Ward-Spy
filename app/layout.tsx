@@ -38,9 +38,9 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${cinzel.variable} ${caudex.variable} ${montserrat.variable} font-sans`}
+        className={`${cinzel.variable} ${caudex.variable} ${montserrat.variable} font-sans dark`}
       >
-        <div className="flex flex-col gap-2">
+        <div className="bg-background">
           <Navbar />
           <Search />
         </div>

@@ -18,10 +18,10 @@ export const LiveGame = ({ puuid }) => {
     }, [])
 
     return (
-        <>
+        <div className="w-5xl mx-auto">
             {loading && <Loader />}
             {data?.data && <TableLIveGame data={data?.data} />}
             {data?.inGame === false && <p className="text-center font-semibold text-sm mt-6">Upps No esta en partida</p>}
-        </>
+        </div>
     )
 }
