@@ -16,17 +16,20 @@ export const LeagueLiveGame = ({ leagueInfo, compact = false }) => {
                 <div className="flex items-center justify-between gap-2">
                     <div className="flex-1 flex items-center gap-2 min-w-0">
                         <div className="w-6 h-6 shrink-0">
-                            <img 
+                            <img
                                 src={`https://raw.communitydragon.org/14.20/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-emblem/emblem-${tier.toLowerCase()}.png`}
-                                alt={tier} 
-                                className="w-full h-full object-cover"
+                                alt={tier}
+                                className="w-full h-full object-cover scale-200"
                             />
                         </div>
                         <div className="min-w-0">
                             <div className="flex items-center gap-1 leading-none">
                                 <span className="text-[10px] text-muted-foreground">{queueType}</span>
                                 <span className="text-muted-foreground text-[10px]">•</span>
-                                <span className="text-xs font-medium text-foreground">{leagueInfo.leaguePoints} <span className="text-muted-foreground">LP</span></span>
+                                <div className="flex items-center gap-1">
+                                    <span className="text-xs font-medium text-foreground">{leagueInfo.leaguePoints}</span>
+                                    <span className="text-muted-foreground text-xs">LP</span>
+                                </div>
                             </div>
                         </div>
                     </div>

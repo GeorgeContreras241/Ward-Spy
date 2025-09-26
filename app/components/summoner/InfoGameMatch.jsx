@@ -77,7 +77,7 @@ export const InfoGameMatch = ({ dataPlayers }) => {
   });
 
   return (
-    <div className=" w-full bg-[#1e1e1e] rounded-lg overflow-hidden shadow-lg text-[11px] md:text-xs px-1">
+    <div className="w-full bg-[#1e1e1e] rounded-lg  shadow-lg text-[11px] md:text-xs px-1">
       {/* Navigation Tabs */}
       <nav className="flex border-b border-gray-700 px-1">
         <button onClick={() => setActiveTab(0)} className={`${activeTab === 0 ? 'border-b-2 border-blue-500 text-blue-400' : ''} px-2 py-1.5 text-xs font-medium  hover:bg-gray-800 transition-colors`}>

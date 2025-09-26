@@ -97,6 +97,8 @@
   --shadow-lg: 0px 1px 3px 0px hsl(0 0% 0% / 0.17), 0px 4px 6px -1px hsl(0 0% 0% / 0.17);
   --shadow-xl: 0px 1px 3px 0px hsl(0 0% 0% / 0.17), 0px 8px 10px -1px hsl(0 0% 0% / 0.17);
   --shadow-2xl: 0px 1px 3px 0px hsl(0 0% 0% / 0.43);
+  --color-win: oklch(0.3735 0.1677 146.12);
+  --color-lose: oklch(0.5029 0.2245 32.82);
 }
 
 @theme inline {
@@ -157,6 +159,9 @@
   --tracking-wide: calc(var(--tracking-normal) + 0.025em);
   --tracking-wider: calc(var(--tracking-normal) + 0.05em);
   --tracking-widest: calc(var(--tracking-normal) + 0.1em);
+
+  --color-win: var(--color-win);
+  --color-lose: var(--color-lose);
 }
 
 body {
@@ -170,5 +175,14 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@media (max-width: 450px) {
+  .stats{
+    @apply hidden;
+  }
+  .items{
+    @apply h-6 w-6;
   }
 }

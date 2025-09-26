@@ -54,19 +54,32 @@ export const RecentGames = ({ dataSumonner, version }) => {
                     .slice(0, 3);
 
                 return (
-                    <div className="flex w-full flex-col md:flex-row gap-3">
-                        <div className="w-full md:w-1/3 flex flex-col items-center justify-center gap-2 md:pr-4 md:border-r border-border">
-                            <p className="text-3xl md:text-4xl font-bold leading-tight text-primary">{winRate}%</p>
-                            <p className="text-xs text-muted-foreground">Win Rate</p>
-                            <div className="w-full max-w-[140px] bg-muted h-1 rounded-full overflow-hidden">
-                                <div className="h-full bg-primary" style={{ width: `${winRate}%` }}></div>
-                            </div>
-                            <div className="flex flex-col  items-center gap-2 mt-1">
-                                <span className="px-2 py-0.5 rounded-full bg-accent text-foreground text-[11px]">KDA {avgKDA}:1</span>
-                                <span className="px-2 py-0.5 rounded-full bg-accent text-[11px]"><span className="text-foreground">{wins}W</span> <span className="text-muted-foreground">/</span> <span className="text-destructive">{totalGames - wins}L</span></span>
-                            </div>
+                    <div className="flex w-full flex-col md:flex-row P-2 gap-3">
+                        <div className="w-full flex flex-row md:flex-col gap-2  md:border-r border-border">
+                            <section className="flex flex-col p-2 gap-2 w-3/3 md:w-full h-full">
+                                <p className="text-xs font-bold text-muted-foreground">Win Rate</p>
+                                <p className="text-3xl md:text-4xl font-bold leading-tight text-chart-4">{winRate}%</p>
+
+                                <div className="w-2/3 bg-muted h-1 rounded-full overflow-hidden">
+                                    <div className="h-full bg-chart-2" style={{ width: `${winRate}%` }}></div>
+                                </div>
+                                <div className="flex flex-row flex-wrap gap-2 mt-1">
+                                    <span className="px-2 py-0.5 w-fit rounded-full bg-accent text-foreground text-[11px]">KDA {avgKDA}:1</span>
+                                    <span className="px-2 py-0.5 w-fit rounded-full bg-accent text-[11px]">
+                                        <span className="text-chart-4">{wins}W</span> <span className="text-muted-foreground">/
+                                        </span> <span className="text-destructive">{totalGames - wins}L</span>
+                                    </span>
+                                    <span className="px-2 py-0.5 w-fit rounded-full bg-accent text-[11px]">{totalGames}
+                                        <span className="text-muted-foreground"> Games</span>
+                                    </span>
+                                </div>
+                            </section>
+                            <section className="flex flex-col gap-2 w-1/3 p-2 md:w-full h-full">
+                                <p className="text-xs font-bold text-muted-foreground">KDA</p>
+                                <p className="text-3xl md:text-4xl font-bold leading-tight text-chart-4">{avgKDA}:1</p>
+                            </section>
                         </div>
-                        <div className="w-full md:w-2/3 flex flex-col gap-2">
+                        <div className="w-full min-w-1/3 flex flex-col gap-2">
                             {sortedChampions.map((champ, index) => {
                                 const champKDA = champ.deaths > 0
                                     ? ((champ.kills + champ.assists) / champ.deaths).toFixed(1)

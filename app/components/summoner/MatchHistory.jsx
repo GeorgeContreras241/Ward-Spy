@@ -25,7 +25,7 @@ export const MatchHistory = () => {
             const gameDurationMinutes = (item.value.info.gameDuration / 60).toFixed(0)
             const gameMode = item.value.info.gameMode
             return (
-              <div key={index}>
+              <div key={index} >
                 <Match 
                 dataPlayer={puiidPlayers} 
                 dataPlayers={item.value.info.participants}

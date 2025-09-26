@@ -20,7 +20,7 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
   const csPerMin = (dataPlayer.totalMinionsKilled / matchDurationMinutes).toFixed(1);
 
   const teamColor = dataPlayer.teamId === 100 ? 'border-primary' : 'border-destructive';
-  const winColor = dataPlayer.win ? 'bg-green-700/30 ' : 'bg-red-700/30';
+  const winColor = dataPlayer.win ? 'dark:bg-green-950 bg-green-700/50' : 'dark:bg-red-950 bg-red-700/50';
 
 
   if (!dataPlayer) {
@@ -35,12 +35,13 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
     dataPlayer.item3, dataPlayer.item4, dataPlayer.item5, dataPlayer.item6
   ] : [];
   return (
-    <section className="flex flex-col gap-2">
+    <section className="flex flex-col items-center ">
       <article
-        className={`flex flex-row items-center justify-around px-2 gap-2 py-1.5 md:py-0 rounded-[var(--radius)] border-l-4
+        className={`flex max-w-4xl w-full items-center  justify-around   w-fit flex-row items-center px-2 gap-2 py-1.5 
+          md:py-0 rounded-[var(--radius)] border-l-4 
          ${teamColor} ${winColor} ${isCurrentPlayer ? 'ring-2 ring-ring' : ''} cursor-pointer transition-colors`}
       >
-        <section className="flex flex-row gap-2">
+        <section className="flex flex-row gap-2 shrink-0">
           {/*Champion Image*/}
           <div className='relative md:h-14 md:w-14 h-10 w-10'>
             <img
@@ -85,21 +86,19 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
           </div>
         </section>
         {/* KDA */}
-        <section className='flex flex-col items-center min-w-[100px]'>
+        <section className='flex flex-col items-center min-w-[100px] shrink-0'>
           <div className='flex items-center gap-1'>
-            <span className="font-bold text-primary text-xs">{gameMode ? gameMode : 'Unknown'}</span>
+            <span className="font-bold text-popover-foreground text-[.7rem]">{gameMode ? gameMode : 'Unknown'}</span>
           </div>
           <div className='flex items-center gap-1 text-md md:text-xl'>
-            <span className='font-bold'>{dataPlayer?.kills}</span>
+            <span className='font-bold text-foreground'>{dataPlayer?.kills}</span>
             <span className='text-muted-foreground'>/</span>
-            <span className={`font-bold ${dataPlayer?.deaths > 5 ? 'text-destructive' : ''}`}>
-              {dataPlayer?.deaths}
-            </span>
+            <span className="font-bold text-lose">{dataPlayer?.deaths}</span>
             <span className='text-muted-foreground'>/</span>
-            <span className='font-bold'>{dataPlayer?.assists}</span>
+            <span className='font-bold text-win'>{dataPlayer?.assists}</span>
           </div>
           <div className='text-xs'>
-            <span className={`font-semibold ${parseFloat(kdaRatio) >= 3 ? 'text-primary' : 'text-foreground'}`}>
+            <span className="font-semibold text-popover-foreground">
               {kdaRatio}:1 KDA
             </span>
           </div>
@@ -109,22 +108,22 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
         </section>
 
         {/* Stats */}
-        <section className='flex flex-col text-xs min-w-[80px]'>
+        <section className='stats flex flex-col text-xs min-w-[80px] shrink-0 '>
           <div className='flex justify-between'>
             <span className='text-muted-foreground'>CS:</span>
-            <span>{dataPlayer?.totalMinionsKilled} ({csPerMin})</span>
+            <span className="text-popover-foreground">{dataPlayer?.totalMinionsKilled} ({csPerMin})</span>
           </div>
           <div className='flex justify-between'>
             <span className='text-muted-foreground'>Gold:</span>
-            <span>{(dataPlayer?.goldEarned / 1000).toFixed(1)}k</span>
+            <span className="text-popover-foreground">{(dataPlayer?.goldEarned / 1000).toFixed(1)}k</span>
           </div>
           <div className='flex justify-between'>
             <span className='text-muted-foreground'>DMG:</span>
-            <span>{(dataPlayer?.totalDamageDealtToChampions / 1000).toFixed(1)}k</span>
+            <span className="text-popover-foreground">{(dataPlayer?.totalDamageDealtToChampions / 1000).toFixed(1)}k</span>
           </div>
           <div className='flex justify-between'>
             <span className='text-muted-foreground'>Time:</span>
-            <span>{gameDurationMinutes} min</span>
+            <span className="text-popover-foreground">{gameDurationMinutes} min</span>
           </div>
           <div className='flex justify-between text-xs text-muted-foreground'>
             <span className="text-xs tracking-wide text-center w-full">{gameCreation}</span>
@@ -132,32 +131,32 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
 
         </section>
 
-        <section className='md:flex flex-row gap-1 py-1 align-center justify-center hidden'>
-          <ul className="flex flex-col items-center justify-center">
+        <section className='sm:flex flex-row gap-1 py-1 align-center justify-center hidden  shrink-0'>
+          <ul className="flex flex-col items-center justify-center w-[110px]">
             {
               team1.map((item, index) => (
-                <li key={index} className="flex flex-row-reverse items-center  gap-1">
+                <li key={index} className="flex flex-row items-center  gap-1">
                   <img src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${item?.championName}.png`}
                     className="h-4.5 w-4.5 border border-border rounded-[var(--radius)]" alt={items?.championName} title={item?.championName} />
                   <span
-                    className={`text-[.7rem] h-[10px] flex items-center text-foreground w-25 truncate tracking-wide ${item.riotIdGameName === dataPlayer.riotIdGameName ?
-                      'text-primary font-semibold' : 'text-muted-foreground'}`}
+                    className={`text-[.7rem] h-[10px] flex items-center  w-25 truncate ${item.riotIdGameName === dataPlayer.riotIdGameName ?
+                      'text-chart-3 font-semibold' : 'text-muted-foreground'}`}
                     title={item.riotIdGameName}
                   >{item.riotIdGameName}</span>
                 </li>
               ))
             }
           </ul>
-          <div className="w-[1px] bg-border/50 "></div>
-          <ul className="flex flex-col justify-center">
+          <div className="w-[1px] bg-border/50 h-full"></div>
+          <ul className="flex flex-col justify-center w-[110px]">
             {
               team2.map((item, index) => (
                 <li key={index} className="flex flex-row items-center gap-2">
                   <img src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${item?.championName}.png`}
                     className="h-4.5 w-4.5 border border-border rounded-[var(--radius)]" alt={item?.championName} title={item?.championName} />
                   <span
-                    className={`flex text-[.7rem] h-[10px] items-center text-foreground w-25 truncate tracking-wide ${item.riotIdGameName === dataPlayer.riotIdGameName ?
-                      'text-primary font-semibold' : 'text-muted-foreground'}`}
+                    className={`flex text-[.7rem] h-[10px] items-center text-foreground w-25 truncate ${item.riotIdGameName === dataPlayer.riotIdGameName ?
+                      'text-chart-3 font-semibold' : 'text-muted-foreground'}`}
                     title={item.riotIdGameName}
                   >{item.riotIdGameName}</span>
                 </li>
@@ -166,7 +165,7 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
           </ul>
         </section>
         {/* Items Grid */}
-        <div className='flex flex-row gap-1'>
+        <div className='flex flex-row gap-1 shrink-0'>
           {/* Main Items */}
           <div className='grid grid-cols-3 gap-1'>
             {items.slice(0, 6).map((item, index) => {
@@ -220,7 +219,7 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
       </article>
       {
         show ? (
-          <div className="">
+          <div className="mt-2 w-full">
             <InfoGameMatch dataPlayers={dataPlayers} />
           </div>
         ) : null

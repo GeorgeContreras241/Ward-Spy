@@ -1,8 +1,8 @@
 import React from 'react';
 
 export const RecentChampions = ({ champ, champWinRate, champKDA, version, index }) => {
-    const winRateColor = champWinRate >= 60 ? 'text-primary' : champWinRate >= 50 ? 'text-foreground' : 'text-destructive';
-    const kdaColor = parseFloat(champKDA) >= 3.5 ? 'text-primary' : parseFloat(champKDA) >= 2.5 ? 'text-foreground' : 'text-destructive';
+    const winRateColor = champWinRate >= 60 ? 'text-win' : champWinRate >= 50 ? 'text-foreground' : 'text-destructive';
+    const kdaColor = parseFloat(champKDA) >= 3.5 ? 'text-destructive' : parseFloat(champKDA) >= 2.5 ? 'text-foreground' : 'text-destructive';
 
     const wins = Math.round((champWinRate / 100) * champ.total);
     const losses = champ.total - wins;
@@ -30,7 +30,7 @@ export const RecentChampions = ({ champ, champWinRate, champKDA, version, index 
                 <div className="flex items-center text-xs mt-0.5 gap-2">
                     <div className="flex items-center gap-2">
                         <span className={`font-bold ${winRateColor}`}>
-                            {champWinRate}% <span className="text-muted-foreground">WR</span>
+                            {champWinRate}% <span className="text-foreground">WR</span>
                         </span>
                         <span className="text-muted-foreground">|</span>
                         <span className={kdaColor}>
@@ -39,17 +39,17 @@ export const RecentChampions = ({ champ, champWinRate, champKDA, version, index 
                     </div>
                 </div>
 
-                <div className="w-full bg-muted h-1 rounded-full mt-0.5 overflow-hidden">
+                <div className="w-full bg-lose h-1 rounded-full mt-0.5 overflow-hidden">
                     <div
-                        className="h-full bg-primary"
+                        className="h-full bg-chart-4"
                         style={{ width: `${champWinRate}%` }}
                     ></div>
                 </div>
 
                 <div className="flex justify-between text-[10px] text-muted-foreground mt-0">
                     <div className="flex items-center gap-2">
-                        <span className="text-foreground">{wins}W</span>
-                        <span className="text-destructive">{losses}L</span>
+                        <span className="text-chart-4">{wins}W</span>
+                        <span className="text-lose">{losses}L</span>
                     </div>
                     <span>{champ.total} games</span>
                 </div>
