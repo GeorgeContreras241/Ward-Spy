@@ -48,7 +48,7 @@ export default function RootLayout({children,}) {
   return (
     <html lang="es">
       <body
-        className={`${cinzel.variable} ${caudex.variable} ${montserrat.variable} font-sans ${mode === "dark" ? "dark" : "light"}`}
+        className={`overflow-y-scroll scrollbar-hide h-64 ${cinzel.variable} ${caudex.variable} ${montserrat.variable} font-sans ${mode === "dark" ? "dark" : "light"} `}
       >
         <div className="bg-background">
           <Navbar toggleMode={toggleMode} mode={mode}/>

@@ -3,11 +3,12 @@ import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { useSumonnerStore } from '@/app/store/SummonerStore'
 import { useFetch } from '@/app/hooks/useFetch'
+import { Spinner } from '@/components/ui/shadcn-io/spinner'
 
 
 export const Search = () => {
   const router = useRouter()
-  const { setVersion, seturlListSpell, seturlListChamp, setDataNameTag } = useSumonnerStore()
+  const { setVersion, seturlListSpell, seturlListChamp, setDataNameTag, loading } = useSumonnerStore()
   const [riotId, setRiotId] = useState('')
   const [error, setError] = useState('')
   const [dataName, dataTag] = riotId.split('#')
@@ -117,10 +118,10 @@ export const Search = () => {
             </span>
             <button
               type='submit'
-              className='bg-primary-foreground text-background text-xs font-bold px-12 py-2 rounded-[0.5rem] hover:bg-primary-foreground/90 cursor-pointer'
+              className='bg-primary-foreground text-background text-xs font-bold px-12 py-2 w-40 rounded-[0.5rem] hover:bg-primary-foreground/90 cursor-pointer'
               aria-label='Buscar perfil'
             >
-              Buscar
+              { loading ? <Spinner  className='h-4 w-3 scale-150 flex items-center justify-center'/> : "Buscar"}
             </button>
           </div>
         </form>
