@@ -4,8 +4,9 @@ export async function GET(req) {
   const { searchParams } = new URL(req.url)
   if (!searchParams) return notfound()
 
-  const nameTag = searchParams.get('nameTag')
-  const dataTag = searchParams.get('dataTag')
+
+    const nameTag = searchParams.get('nameTag')
+    const dataTag = searchParams.get('dataTag')
   const RiotApiKey = process.env.RIOT_API_KEY
   const RiotApiUrl = `https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${nameTag}/${dataTag}`
 

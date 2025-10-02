@@ -6,6 +6,7 @@ import { LiveGame } from "@/app/components/liveGame/LiveGame"
 import { Loader } from "@/app/components/ui/Loader"
 import { NavbarMatch } from "@/app/components/ui/NavbarMatch"
 import { testingLocalStorage, setDataLocalStorage, setDataFetch } from "@/app/utils/setLocalStoraje"
+import { Clash } from "@/app/components/clash/Clash"
 
 const page = ({ params }) => {
   const [error, setError] = useState(null)
@@ -64,7 +65,7 @@ const page = ({ params }) => {
         <NavbarMatch setRouterPath={setRouterPath} />
         {routerPath === 1 && <MatchHistory />}
         {routerPath === 2 && <LiveGame newDate={newDate} puuid={dataSumonner.user.puuid}/>}
-        {routerPath === 3 && <p>Clash</p>}  
+        {routerPath === 3 && <Clash/>}  
       </>
       }
     </main>
