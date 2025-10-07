@@ -5,10 +5,18 @@ import Player from "@/lib/models/players";
 export async function GET() {
   try {
     await dbConnect();
-    const players = await Player.find({});
-    return NextResponse.json({ success: true, data: players }, { status: 200 });
-  } catch (error) {
-    console.error("/api/prueba GET error:", error);
-    return NextResponse.json({ success: false, error: error?.message || "Internal Server Error" }, { status: 500 });
+    const playerModel1 = {
+      puuid: "holaaaaaaaaaaaaa",
+      summonerName: "ShadowFox#MX1",
+      summonerLevel: 247,
+      region: "LAN",
+      profileIconId: 5379
+    };
+    const play = new Player(playerModel1)
+    await play.save()
+    return NextResponse.json({ status: 200 });
+  }
+  catch (error) {
+    return NextResponse.json({ status: 500, message: error.message });
   }
 }

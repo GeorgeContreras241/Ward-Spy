@@ -23,30 +23,35 @@ export const testingLocalStorage = () => {
   }
 }
 
-
+//Siento que ya esto god miar denuevo y verificar
 export const setDataFetch = async ({ nameTag, dataTag, setLoading }) => {
   setLoading(true)
   try {
-    console.log("haciendo fetch")
     const res = await fetch(`/api/sumonner?nameTag=${nameTag}&dataTag=${dataTag}`)
     if (!res.ok) {
       return {
         results: {
-          status: 500,
+          status: res.status,
           infoSummoner: null,
-          message: "Error obteniendo datos del Api"
+          message: res.statusText
         }
       }
     }
-    const data = await res.json()
-    if (data.status === 500) {
-      return { results: { status: 500, infoSummoner: null, message: "Error obteniendo datos del Api" } }
+    const data = await res.json() 
+    if(data.status != 200){
+      return {
+        results: {
+          status: data.status,
+          infoSummoner: null,
+          message: data.message
+        }
+      }
     }
     const newResponse = {
-      results: {
-        status: 200,
+      results: { 
+        status: data.status,
         infoSummoner: data.response,
-        message: "Datos obtenidos correctamente"
+        message: data.message
       }
     }
     return newResponse
@@ -57,7 +62,7 @@ export const setDataFetch = async ({ nameTag, dataTag, setLoading }) => {
     setLoading(false)
   }
 }
-
+//funcion siendo revisada
 
 export const setDataLocalStorage = (infoSumonner) => {
   localStorage.setItem('time', Date.now())

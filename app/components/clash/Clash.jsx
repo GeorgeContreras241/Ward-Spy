@@ -9,15 +9,17 @@ export const Clash = () => {
             const data = await res.json()
             console.log(data)
         } catch (error) {
-            console.log(error)
+            console.log(error.error)
         }
     }
 
-  
+    useEffect(() => {
+        getData()
+    }, [])
 
     return (
         <div>Clash penelope
-            <button onClick={getData}>Get Data</button>
+            
         </div>
     )
 }
