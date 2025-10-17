@@ -1,55 +1,117 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ward Spy - League of Legends Stats Tracker
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-First, run the development server:
+Ward Spy es una aplicación web moderna para rastrear estadísticas de League of Legends, ofreciendo información detallada sobre jugadores, partidas en vivo y más.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Características
+
+- 📊 Estadísticas detalladas de invocadores
+- 🎮 Seguimiento de partidas en vivo
+- 📈 Historial de partidas con análisis detallado
+- 🏆 Clasificaciones y logros
+- 🎨 Interfaz de usuario moderna y receptiva
+
+## 🛠️ Tecnologías
+
+- **Frontend:**
+  - Next.js 15 (App Router)
+  - React 19
+  - Tailwind CSS
+  - Zustand (gestión de estado)
+  - Recharts (gráficos)
+
+- **Backend:**
+  - Next.js API Routes
+  - MongoDB con Mongoose
+  - Riot Games API
+
+- **Herramientas de desarrollo:**
+  - TypeScript
+  - ESLint
+  - Prettier
+
+## 📦 Requisitos previos
+
+- Node.js 18+
+- npm o yarn
+- MongoDB Atlas o local
+- API Key de Riot Games
+
+## 🚀 Instalación
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/tu-usuario/ward-spy.git
+   cd ward-spy
+   ```
+
+2. Instala las dependencias:
+   ```bash
+   npm install
+   # o
+   yarn
+   ```
+
+3. Configura las variables de entorno:
+   Crea un archivo `.env.local` en la raíz del proyecto con las siguientes variables:
+   ```
+   MONGODB_URI=tu_cadena_de_conexion_mongodb
+   RIOT_API_KEY=tu_api_key_de_riot
+   NEXT_PUBLIC_RIOT_API_KEY=tu_api_key_publica_de_riot
+   NEXTAUTH_SECRET=tu_secreto_para_next_auth
+   NEXTAUTH_URL=http://localhost:3000
+   ```
+
+4. Inicia el servidor de desarrollo:
+   ```bash
+   npm run dev
+   # o
+   yarn dev
+   ```
+
+5. Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
+
+## 🏗️ Estructura del Proyecto
+
+```
+ward-spy/
+├── app/                    # Rutas de la aplicación
+│   ├── api/               # Endpoints de la API
+│   ├── components/        # Componentes compartidos
+│   ├── hooks/             # Custom hooks
+│   ├── store/             # Estado global con Zustand
+│   └── utils/             # Utilidades
+├── components/            # Componentes de la UI
+│   ├── clash/            # Componentes de Clash
+│   ├── intro/            # Página de inicio
+│   ├── liveGame/         # Partidas en vivo
+│   ├── matchHistory/     # Historial de partidas
+│   ├── summoner/         # Perfil de invocador
+│   └── ui/               # Componentes de UI reutilizables
+├── lib/                  # Lógica del lado del servidor
+│   └── models/           # Modelos de MongoDB
+├── public/               # Archivos estáticos
+└── styles/              # Estilos globales
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📄 Licencia
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más información.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🤝 Contribución
 
-## Learn More
+¡Las contribuciones son bienvenidas! Por favor, lee nuestras pautas de contribución para más detalles.
 
-To learn more about Next.js, take a look at the following resources:
+## 📧 Contacto
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+¿Tienes preguntas? Contáctame en [georgecontreras241@gmail.com](mailto:georgecontreras241@gmail.com)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+Hecho con ❤️ por [George Contreras](https://github.com/GeorgeContreras241)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-
-Tipos más comunes
-
-feat → nueva funcionalidad.
-
-fix → corrección de bug.
-
-docs → solo cambios en documentación.
-
-style → cambios de formato, espacios, comas (sin afectar lógica).
-
-refactor → cambios de código que no arreglan ni agregan features.
-
-test → agregar o modificar tests.
-
-chore → tareas varias (build, config, dependencias).
-
-perf → mejoras de rendimiento.
+Aun en desarrollo 🚀
