@@ -2,8 +2,8 @@
 "use client"
 import { useState, useEffect } from "react";
 import { Cinzel, Caudex, Montserrat } from 'next/font/google';
-import { Navbar } from "@/app/components/ui/Nanvar";
-import { Search } from "@/app/components/ui/Search";
+import { Navbar } from "@/components/intro/Navbar";
+import { Search } from "@/components/intro/Search";
 import "./globals.css";
 
 const cinzel = Cinzel({

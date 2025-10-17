@@ -1,52 +1,75 @@
 "use client"
 import { useEffect, use, useState } from "react"
 import { useSumonnerStore } from "@/app/store/SummonerStore"
-import { MatchHistory } from "@/app/components/summoner/MatchHistory"
-import { LiveGame } from "@/app/components/liveGame/LiveGame"
-import { Loader } from "@/app/components/ui/Loader"
-import { NavbarMatch } from "@/app/components/ui/NavbarMatch"
-import { setDataFetch } from "@/app/utils/setLocalStoraje"
-import { Clash } from "@/app/components/clash/Clash"
+import { Loader } from "@/components/ui/Loader"
+import { setDataFetch } from "@/app/utils/setDataFetch"
+import { testingLocalStorage } from "@/app/utils/testingLocalStorage"
+import { setDataLocalStorage } from "@/app/utils/setLocalStoraje"
+import { verifyPlayerStorage } from "@/app/utils/verifyPlayerStorage"
+import { PagePrimary } from "@/components/summoner/PagePrimary"
+import { replaceLocalStorage } from "@/app/utils/replaceLocalStorage"
 
 const page = ({ params }) => {
   const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(false)
   const [routerPath, setRouterPath] = useState(1)
-  const { dataSumonner, setDataSumonner, setLoading, loading, setDataPuuid } = useSumonnerStore()
+  const { dataSumonner, setDataSumonner, setDataPuuid } = useSumonnerStore()
   const { summonerName } = use(params)
   const newDate = summonerName.split('-')
 
   useEffect(() => {
+    verifyPlayerStorage(setDataPuuid)
     getData()
   }, [])
 
   const getData = async () => {
-    if (newDate.length === 2) {
-      const [nameTag, dataTag] = newDate
-      const newResponse = await setDataFetch({ nameTag, dataTag, setLoading, setError })
-      setDataSumonner(newResponse.results.infoSummoner)
-      setDataPuuid(newResponse.results?.infoSummoner?.user?.puuid)
+    setLoading(true)
+    setDataSumonner(null)
+    const [nameTag, dataTag] = newDate
+    const { matchHistoryJson, nameTagStorage } = testingLocalStorage()
+    if (nameTagStorage == summonerName) {
+      try {
+        const dataFetch = await setDataFetch(nameTag, dataTag, false)
+        const newPlayer = {
+          ...dataFetch.results.infoSummoner,
+          matchs: matchHistoryJson
+        }
+        setDataPuuid(newPlayer.puuid)
+        setDataSumonner(newPlayer)
+        setDataLocalStorage(newPlayer.matchs, newPlayer.puuid, summonerName)
+      } catch (error) {
+        setError(error)
+      } finally {
+        setLoading(false)
+      }
     } else {
-      console.log("error ")
+      replaceLocalStorage()
+      try {
+        const dataFetch = await setDataFetch(nameTag, dataTag, true)
+        console.log(dataFetch)
+        if (dataFetch.results.status != 200) {
+          setError(dataFetch.results.message + dataFetch.results.status)
+          setLoading(false)
+        } else {
+          const newPlayer = dataFetch.results.infoSummoner
+          setDataPuuid(newPlayer.puuid)
+          setDataSumonner(newPlayer)
+          setDataLocalStorage(newPlayer.matchs, newPlayer.puuid, summonerName)
+        }
+      } catch (error) {
+        setError(error)
+        setLoading(false)
+      } finally {
+        setLoading(false)
+      }
     }
   }
 
   if (loading) return <Loader />
 
- 
-
   return (
     <main>
-
-      {error &&
-        <p className="text-red-500 text-center mt-20">{error}</p>
-      }
-      {dataSumonner && <>
-        <NavbarMatch setRouterPath={setRouterPath} />
-        {routerPath === 1 && <MatchHistory />}
-        {routerPath === 2 && <LiveGame newDate={newDate} puuid={dataSumonner.user.puuid}/>}
-        {routerPath === 3 && <Clash/>}  
-      </>
-      }
+      <PagePrimary error={error} dataSumonner={dataSumonner} setRouterPath={setRouterPath} routerPath={routerPath} newDate={newDate} />
     </main>
   )
 }

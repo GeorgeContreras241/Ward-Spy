@@ -1,10 +1,9 @@
-"use client"
 
-import { ChartBarMultiple } from "@/components/chart-bar-multiple";
 
 export default function Home() {
   return (
     <div>
- </div>
+      <h1>Cositas Para mostrar</h1>
+    </div>
   );
 }
