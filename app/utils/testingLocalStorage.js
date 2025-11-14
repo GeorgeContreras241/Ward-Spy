@@ -6,6 +6,10 @@ export const testingLocalStorage = () => {
     const puuidStorage = localStorage.getItem("puuid")
     const nameTagStorage = localStorage.getItem("nameTag")
 
+   
+    if (!puuidStorage && !nameTagStorage) {
+      return false
+    }
     if (!timeStoraje && !matchHistoryStorage) {
       return false
     }
@@ -15,7 +19,6 @@ export const testingLocalStorage = () => {
     if (matchHistoryStorage === undefined || matchHistoryStorage === null) {
       return false
     }
-
     const timeDiffMinutes = (Date.now() - timeStoraje) / 60000
     if (timeDiffMinutes > 30) {
       return false
@@ -25,6 +28,9 @@ export const testingLocalStorage = () => {
     }
     const matchHistoryJson = JSON.parse(matchHistoryStorage)
     if (matchHistoryJson.length === 0) {
+      return false
+    }
+    if(matchHistoryJson[0].value.status.status_code !== 200){
       return false
     }
     return { matchHistoryJson, puuidStorage, timeStoraje, nameTagStorage }

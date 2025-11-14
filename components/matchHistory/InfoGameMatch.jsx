@@ -9,11 +9,10 @@ const stats = [
   { id: 1, name: "kills", label: "Asesinatos" },
   { id: 2, name: "deaths", label: "Muertes" },
   { id: 3, name: "assists", label: "Asistencias" },
-  { id: 4, name: "kda", label: "KDA" },
   { id: 5, name: "goldEarned", label: "Oro ganado" },
   { id: 6, name: "goldSpent", label: "Oro gastado" },
   { id: 7, name: "totalMinionsKilled", label: "Súbditos (CS)" },
-  { id: 8, name: "neutralMinionsKilled", label: "Monstruos neutrales" },
+  { id: 8, name: "longestTimeSpentLiving", label: "Monstruos neutrales" },
   { id: 9, name: "champExperience", label: "Experiencia" },
   { id: 10, name: "champLevel", label: "Nivel de campeón" },
 
@@ -65,10 +64,9 @@ const stats = [
 
 
 export const InfoGameMatch = ({ dataPlayers }) => {
+  console.log(dataPlayers[0].timePlayed)
   const [activeTab, setActiveTab] = useState(0);
-  const [selectedStat, setSelectedStat] = useState('kills');
-  const [enemyStat, setEnemyStat] = useState('kills');
-
+  const [selectedStat, setSelectedStat] = useState(stats[0]);
 
   const sortedPlayers = [...dataPlayers].sort((a, b) => {
     if (a.win && !b.win) return -1;
@@ -84,16 +82,13 @@ export const InfoGameMatch = ({ dataPlayers }) => {
           Resumen
         </button>
         <button onClick={() => setActiveTab(1)} className={`${activeTab === 1 ? 'border-b-2 border-blue-500 text-blue-400' : ''} px-2 py-1.5 text-xs font-medium hover:bg-gray-800 transition-colors`}>
-          Análisis de equipo
-        </button>
-        <button onClick={() => setActiveTab(2)} className={`${activeTab === 2 ? 'border-b-2 border-blue-500 text-blue-400' : ''} px-2 py-1.5 text-xs font-medium  hover:bg-gray-800 transition-colors`}>
-          Análisis rival
+          Graficas
         </button>
       </nav>
 
       {/* Players List */}
       {activeTab === 0 && (
-        <div className="grid lg:grid-cols-2 grid-cols-1 gap-3 p-1.5">
+        <div className="grid lg:grid-cols-2 grid-cols-1 gap-3 p-1.5 ">
           <div className="overflow-x-auto rounded border border-gray-700 bg-gray-800/50">
             <div className="min-w-[480px] w-full">
               {sortedPlayers.map((player, index) => (
@@ -116,31 +111,25 @@ export const InfoGameMatch = ({ dataPlayers }) => {
       )}
       {activeTab === 1 && (
         <div className="p-1.5">
-          <h3 className="text-white text-md font-medium mb-2 px-1">Comparativa entre Equipos</h3>
-          <div className="bg-gray-800/80 flex flex-row-reverse gap-2 justify-around p-2 rounded border border-gray-700">
-            <div className="flex justify-center gap-2 mb-4 flex-wrap">
-              {stats.map((stat) => (
-                <Button 
-                  key={stat.id}
-                  className={`w-fit capitalize ${selectedStat === stat.name ? 'bg-blue-600 hover:bg-blue-700' : ''}`}
-                  variant={selectedStat === stat.name ? 'default' : 'outline'}
-                  onClick={() => setSelectedStat({ id: stat.id, name: stat.name })}
-                >
-                  {stat.label}
-                </Button>
-              ))}
-            </div>
-            <div className="min-h-[300px] flex items-center justify-center">
+          <h3 className="text-white text-md font-medium mb-2 px-1">Graficas de estadísticas</h3>
+          <div className="bg-gray-800/80 grid grid-cols-1 md:grid-cols-2 gap-2 justify-around p-1 rounded border border-gray-700">
+            <div className="min-h-[300px] w-fit flex items-center justify-center">
               <Chart dataPlayers={dataPlayers} stat={selectedStat} />
             </div>
-          </div>
-        </div>
-      )}
-      {activeTab === 2 && (
-        <div className="p-1.5">
-          <h3 className="text-white text-md font-medi   um mb-2 px-1">Análisis Rival</h3>
-          <div className="bg-gray-800/80 flex flex-col p-2 rounded border border-gray-700">
-            
+            <div className="flex flex-wrap gap-x-[1px]">
+              {
+                stats.map((stat) => (
+                  <Button
+                    key={stat.id}
+                    className={`w-fit text-[10px] font-bold hover:bg-gray-100/20 cursor-pointer h-5 px-2`}
+                    variant={stat.name != selectedStat.name ? 'default' : 'destructive'}
+                    onClick={() => setSelectedStat({ id: stat.id, name: stat.name })}
+                  >
+                    {stat.label}
+                  </Button>
+                ))
+              }
+            </div>
           </div>
         </div>
       )}

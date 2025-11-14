@@ -38,7 +38,7 @@ export const TableLIveGame = ({ data }) => {
         )}
 
         {/* Player Info */}
-        <div className="flex-1 min-w-0 max-w-[130px] overflow-hidden">
+        <div>
           <div className="flex items-baseline">
             <Link href={`/summoner/${gameName}-${tagLine}`} className="text-[13px] font-semibold text-foreground ">
               {gameName}
@@ -66,7 +66,7 @@ export const TableLIveGame = ({ data }) => {
         </div>
 
         {/* League Info (fixed width, single block) */}
-        <div className="flex flex-col ml-auto md:w-[240px] items-end">
+        <div className="flex flex-col ml-auto w-[250px] items-end">
           {soloQ ? (
             <LeagueLiveGame leagueInfo={soloQ} compact />
           ) : flexQ ? (
@@ -121,24 +121,27 @@ export const TableLIveGame = ({ data }) => {
         </div>
       </div>
 
-      <div className="container mx-auto py-3">
+      <div className="container mx-auto py-3 " >
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 w-full">
           {/* Team 1 (Blue) */}
-          <div className="bg-card border border-border rounded-[var(--radius)] shadow-sm overflow-hidden w-full">
-            <div className="bg-chart-1 text-white py-2 px-3 text-xs font-bold">
-              Equipo Azul
-            </div>
-            <div className="divide-y divide-border/70">
-              {team100.map(renderPlayer)}
-            </div>
-            <div className="p-2 border-t border-border">
-              {renderBans(100)}
+          <div className="bg-card border border-border rounded-[var(--radius)] shadow-sm  w-full overflow-x-auto">
+            <div className="min-w-[500px] ">
+              <div className="bg-blue-900 text-white py-2 px-3 text-xs font-bold">
+                Equipo Azul
+              </div>
+              <div className="divide-border/70">
+                {team100.map(renderPlayer)}
+              </div>
+              <div className="p-2 border-t border-border">
+                {renderBans(100)}
+              </div>
             </div>
           </div>
 
           {/* Team 2 (Red) */}
-          <div className="bg-card border border-border rounded-[var(--radius)] shadow-sm overflow-hidden w-full">
-            <div className="bg-chart-2 text-white py-2 px-3 text-xs font-bold">
+          <div className="bg-card border border-border rounded-[var(--radius)] shadow-sm overflow-x-auto w-full">
+           <div className="min-w-[500px]">
+             <div className="bg-red-900 text-white py-2 px-3 text-xs font-bold">
               Equipo Rojo
             </div>
             <div className="divide-y divide-border/70">
@@ -147,6 +150,7 @@ export const TableLIveGame = ({ data }) => {
             <div className="p-2 border-t border-border">
               {renderBans(200)}
             </div>
+           </div>
           </div>
         </div>
       </div>

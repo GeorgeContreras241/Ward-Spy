@@ -1,10 +1,10 @@
-
 "use client"
 import { useState, useEffect } from "react";
 import { Cinzel, Caudex, Montserrat } from 'next/font/google';
 import { Navbar } from "@/components/intro/Navbar";
 import { Search } from "@/components/intro/Search";
 import "./globals.css";
+import { Footer } from "@/components/welcome/Footer";
 
 const cinzel = Cinzel({
   subsets: ['latin'],
@@ -43,7 +43,7 @@ export default function RootLayout({children,}) {
     if (savedMode) {
       setMode(savedMode);
     }
-  }, []);
+  }, [mode]);
 
   return (
     <html lang="es">
@@ -54,7 +54,10 @@ export default function RootLayout({children,}) {
           <Navbar toggleMode={toggleMode} mode={mode}/>
           <Search />
         </div>
-        {children}
+        <div className="min-h-[calc(100vh-64px)]">
+          {children}
+        </div>
+        <Footer />
       </body>
     </html>
   );

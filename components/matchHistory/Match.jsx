@@ -1,10 +1,14 @@
 "use client"
+import { Tooltip } from "react-tooltip";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { InfoGameMatch } from "@/components/matchHistory/InfoGameMatch";
 import { useSumonnerStore } from "@/app/store/SummonerStore";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
-export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1, team2, gameCreation, gameDurationMinutes, gameMode }) => {
+export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1, team2, gameCreation, gameDurationMinutes, gameMode, gameTimeCreation }) => {
+  console.log(gameTimeCreation)
+  const router = useRouter()
   const [show, setShow] = useState(false)
 
   const { version, urlListSpell = {} } = useSumonnerStore()
@@ -22,6 +26,9 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
   const teamColor = dataPlayer.teamId === 100 ? 'border-primary' : 'border-destructive';
   const winColor = dataPlayer.win ? 'dark:bg-green-950 bg-green-700/50' : 'dark:bg-red-950 bg-red-700/50';
 
+  const autoOpen = (name, tagline) => {
+    router.push(`/summoner/${name}-${tagline}`)
+  }
 
   if (!dataPlayer) {
     return (
@@ -39,7 +46,7 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
       <article
         className={`flex max-w-4xl w-full items-center  justify-around   w-fit flex-row items-center px-2 gap-2 py-1.5 
           md:py-0 rounded-[var(--radius)] border-l-4 
-         ${teamColor} ${winColor} ${isCurrentPlayer ? 'ring-2 ring-ring' : ''} cursor-pointer transition-colors`}
+         ${teamColor} ${winColor} ${isCurrentPlayer ? 'ring-2 ring-ring' : ''} transition-colors`}
       >
         <section className="flex flex-row gap-2 shrink-0">
           {/*Champion Image*/}
@@ -99,7 +106,7 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
           </div>
           <div className='text-xs'>
             <span className="font-semibold text-popover-foreground">
-              {kdaRatio}:1 KDA
+              {kdaRatio} KDA
             </span>
           </div>
           <div className='text-xs text-muted-foreground'>
@@ -108,57 +115,55 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
         </section>
 
         {/* Stats */}
-        <section className='stats flex flex-col text-xs min-w-[80px] shrink-0 '>
-          <div className='flex justify-between'>
-            <span className='text-muted-foreground'>CS:</span>
-            <span className="text-popover-foreground">{dataPlayer?.totalMinionsKilled} ({csPerMin})</span>
-          </div>
-          <div className='flex justify-between'>
-            <span className='text-muted-foreground'>Gold:</span>
-            <span className="text-popover-foreground">{(dataPlayer?.goldEarned / 1000).toFixed(1)}k</span>
-          </div>
-          <div className='flex justify-between'>
-            <span className='text-muted-foreground'>DMG:</span>
-            <span className="text-popover-foreground">{(dataPlayer?.totalDamageDealtToChampions / 1000).toFixed(1)}k</span>
-          </div>
-          <div className='flex justify-between'>
-            <span className='text-muted-foreground'>Time:</span>
-            <span className="text-popover-foreground">{gameDurationMinutes} min</span>
-          </div>
-          <div className='flex justify-between text-xs text-muted-foreground'>
-            <span className="text-xs tracking-wide text-center w-full">{gameCreation}</span>
-          </div>
-
+        <section className='stats flex flex-col justify-center items-start text-xs min-w-[80px] shrink-0 border-l border-border border-chart-1 pl-[5px]'>
+            <span className="text-popover-foreground" data-tooltip-id="infoPlayer" data-tooltip-content="Minions">{dataPlayer?.totalMinionsKilled} ({csPerMin})</span>
+            <span className="text-popover-foreground" data-tooltip-id="infoPlayer" data-tooltip-content="Gold">{(dataPlayer?.goldEarned / 1000).toFixed(1)}k</span>
+            <span className="text-popover-foreground" data-tooltip-id="infoPlayer" data-tooltip-content="Damage">{(dataPlayer?.totalDamageDealtToChampions / 1000).toFixed(1)}k</span>
+            <span className="text-popover-foreground" data-tooltip-id="infoPlayer" data-tooltip-content="Duration">{gameDurationMinutes} min</span>
+            <span className="text-xs tracking-wide w-full" data-tooltip-id="infoPlayer" data-tooltip-content={gameTimeCreation}>{gameCreation}</span>
         </section>
 
-        <section className='sm:flex flex-row gap-1 py-1 align-center justify-center hidden  shrink-0'>
-          <ul className="flex flex-col items-center justify-center w-[110px]">
+        <section className='sm:flex flex-row gap-1 py-1 align-center justify-center hidden'>
+          <ul className="flex flex-col items-center justify-center w-[110px] md:w-[150px]">
             {
               team1.map((item, index) => (
-                <li key={index} className="flex flex-row items-center  gap-1">
+                <li key={index} className="flex w-full flex-row items-center cursor-pointer hover:bg-neutral-300/30 hover:brightness-150 gap-1 p-[1px] px-1"
+                  onClick={() => {
+                    autoOpen(item.riotIdGameName, item.riotIdTagline)
+                  }}
+                  data-tooltip-id="my-tooltip"
+                  data-tooltip-content={item.riotIdGameName + "#" + item.riotIdTagline}
+                  data-tooltip-place="top"
+                >
                   <img src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${item?.championName}.png`}
                     className="h-4.5 w-4.5 border border-border rounded-[var(--radius)]" alt={items?.championName} title={item?.championName} />
                   <span
-                    className={`text-[.7rem] h-[10px] flex items-center  w-25 truncate ${item.riotIdGameName === dataPlayer.riotIdGameName ?
+                    className={`text-[.7rem] h-[10px] flex items-center text-start truncate ${item.riotIdGameName === dataPlayer.riotIdGameName ?
                       'text-chart-3 font-semibold' : 'text-muted-foreground'}`}
-                    title={item.riotIdGameName}
-                  >{item.riotIdGameName}</span>
+                  >{item.riotIdGameName}#{item.riotIdTagline}</span>
                 </li>
               ))
             }
           </ul>
           <div className="w-[1px] bg-border/50 h-full"></div>
-          <ul className="flex flex-col justify-center w-[110px]">
+          <ul className="flex flex-col justify-center w-[110px] md:w-[150px]">
             {
               team2.map((item, index) => (
-                <li key={index} className="flex flex-row items-center gap-2">
+                <li key={index} className="flex flex-row items-center cursor-pointer hover:bg-neutral-300/30 hover:brightness-150  gap-1 p-[1px] px-1"
+                  onClick={() => {
+                    autoOpen(item.riotIdGameName, item.riotIdTagline)
+                  }}
+                  data-tooltip-id="my-tooltip"
+                  data-tooltip-content={item.riotIdGameName + "#" + item.riotIdTagline}
+                  data-tooltip-place="top"
+                >
                   <img src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${item?.championName}.png`}
-                    className="h-4.5 w-4.5 border border-border rounded-[var(--radius)]" alt={item?.championName} title={item?.championName} />
+                    className="h-4.5 w-4.5 border border-border rounded-[var(--radius)]" alt={item?.championName} title={item?.championName}  loading="lazy"/>
                   <span
-                    className={`flex text-[.7rem] h-[10px] items-center text-foreground w-25 truncate ${item.riotIdGameName === dataPlayer.riotIdGameName ?
+                    className={`flex text-[.7rem] h-[10px] items-center truncate ${item.riotIdGameName === dataPlayer.riotIdGameName ?
                       'text-chart-3 font-semibold' : 'text-muted-foreground'}`}
-                    title={item.riotIdGameName}
-                  >{item.riotIdGameName}</span>
+                    title={item.riotIdGameName + "#" + item.riotIdTagline}
+                  >{item.riotIdGameName}#{item.riotIdTagline}</span>
                 </li>
               ))
             }
@@ -224,6 +229,8 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
           </div>
         ) : null
       }
+      <Tooltip id="my-tooltip" className="!text-[.7rem] !opacity-60 !p-1 !bg-secondary/90 !font-bold !text-neutral-300"/>
+      <Tooltip id="infoPlayer" className="!p-1 !text-[9px] !opacity-30 !bg-secondary/90 !font-bold !text-white"/>
     </section>
 
   )

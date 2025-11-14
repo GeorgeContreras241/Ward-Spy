@@ -3,7 +3,9 @@ import { MatchHistory } from '@/components/matchHistory/MatchHistory'
 import { LiveGame } from '@/components/liveGame/LiveGame'
 import { NavbarMatch } from '@/components/matchHistory/NavbarMatch'
 import { Clash } from '@/components/clash/Clash'
-export const PagePrimary = ({error,dataSumonner,setRouterPath,routerPath,newDate}) => {
+
+
+export const PagePrimary = ({ error, dataSumonner, setRouterPath, routerPath, newDate }) => {
     return (
         <>
             {error &&

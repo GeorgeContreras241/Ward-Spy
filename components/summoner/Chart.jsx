@@ -6,19 +6,13 @@ export const Chart = ({ dataPlayers, stat }) => {
 
   const chartData = dataPlayers.map((player) => ({
     name: player.championName,
-    [stat.name]: stat.id === 0 ? player.kills : 
-            stat.id === 1 ? player.totalMinionsKilled : 
-            stat.id === 2 ? player.goldEarned : 
-            stat.id === 3 ? player.totalHeal : 
-            stat.id === 4 ? player.totalDamageTaken : 
-            stat.id === 5 ? player.goldEarned : 
-            stat.id === 6 ? player.goldSpent : 0
+    [stat.name]: player[stat.name],
   }))
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Daño total por jugador</CardTitle>
+        <CardTitle>{stat.label|| 'Estadística'}</CardTitle>
       </CardHeader>
       <CardContent>
         <BarChart 
@@ -27,7 +21,7 @@ export const Chart = ({ dataPlayers, stat }) => {
           data={chartData}
           margin={{ bottom: 12, top: 12 }}
         >
-          <CartesianGrid vertical={false} />
+          <CartesianGrid vertical={false} className="border-none"/>
           <XAxis
             dataKey="name"
             tickLine={false}
@@ -43,9 +37,24 @@ export const Chart = ({ dataPlayers, stat }) => {
               />
             )}
           />
-          <Tooltip />
-          <Bar dataKey={stat.name} fill="#3b82f6" radius={[4, 4, 0, 0]} >
-            <LabelList dataKey={stat.name} position="top" />
+          <Tooltip cursor={false} />
+          <Bar 
+            dataKey={stat.name} 
+            fill="#3b4c63ff" 
+            radius={[4, 4, 0, 0]}
+            isAnimationActive={true}
+            activeBar={true}
+          >
+            <LabelList 
+              dataKey={stat.name} 
+              position="top" 
+              fill="#fff" 
+              style={{ 
+                fontSize: '10px', 
+                fontWeight: 'bold',
+
+              }}
+            />
           </Bar>
         </BarChart>
       </CardContent>

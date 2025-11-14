@@ -6,14 +6,21 @@ import getDataPuuid from '@/app/utils/setFetchApi'
 
 
 export async function GET(req) {
-  let user, summoner, stats
+  // Se crea variables para almacenar las datos de los Fetch
+  let user, stats
+
+  // Se extraen los parametros de la uri
   const { searchParams } = new URL(req.url)
   const nameTag = searchParams.get('nameTag');
   const dataTag = searchParams.get('dataTag');
+
+  // Se verifica que los parametros no esten corruptos
   if (!nameTag || !dataTag) return NextResponse.json({ status: 400, message: 'Riot Id corrupto', data: null })
 
+  // Se extrae el header de matchs para saber si se requieren las partidas
   let matchs = req.headers.get('Matchs')
-
+  console.log(matchs)
+  // Se verifica que la api key de riot exista
   const RiotApiKey = process.env.RIOT_API_KEY;
   if (!RiotApiKey) {
     return NextResponse.json(
@@ -26,14 +33,14 @@ export async function GET(req) {
     await dbConnect();
     let verifyPlayer = await Player.findOne({ summonerName: nameTag + '#' + dataTag })
     if (!verifyPlayer) {
-      const {result: playerPuuid, apiRes: playerRes} = await getDataPuuid(`https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${nameTag}/${dataTag}`, RiotApiKey)
+      const { result: playerPuuid, apiRes: playerRes } = await getDataPuuid(`https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${nameTag}/${dataTag}`, RiotApiKey)
       if (!playerRes.ok) {
         return NextResponse.json({
           status: playerRes.status,
           message: playerRes.statusText,
         })
       }
-      const {result: summoner, apiRes: summonerRes} = await getDataPuuid(`https://la1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${playerPuuid.puuid}`, RiotApiKey)
+      const { result: summoner, apiRes: summonerRes } = await getDataPuuid(`https://la1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${playerPuuid.puuid}`, RiotApiKey)
       if (!summonerRes.ok) {
         return NextResponse.json({
           status: summonerRes.status,
@@ -52,12 +59,13 @@ export async function GET(req) {
     } else {
       user = verifyPlayer
     }
-
+    console.log()
     // Verificar si existen stats en la base de datos
     const verifyStats = await Stat.findOne({ puuid: user.puuid })
 
     if (!verifyStats) {
-      const {result: league, apiRes: leagueRes} = await getDataPuuid(`https://la1.api.riotgames.com/lol/league/v4/entries/by-puuid/${user.puuid}`, RiotApiKey)
+      // Si no existe se hace fetch para deterninar su league
+      const { result: league, apiRes: leagueRes } = await getDataPuuid(`https://la1.api.riotgames.com/lol/league/v4/entries/by-puuid/${user.puuid}`, RiotApiKey)
       if (!leagueRes.ok) {
         return NextResponse.json({
           status: leagueRes.status,
@@ -86,25 +94,33 @@ export async function GET(req) {
       const newStat = new Stat(stats)
       await newStat.save()
     } else {
+      // Si existe se asigna el valor de la base de datos
       stats = verifyStats
     }
+
     // Buscar Ids de partidas
-    if (matchs === 'true') { 
-      const {result, apiRes} = await getDataPuuid(`https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${user.puuid}/ids?start=0&count=8`, RiotApiKey)
+    if (matchs === 'true') {
+      const { result, apiRes } = await getDataPuuid(`https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${user.puuid}/ids?start=0&count=8`, RiotApiKey)
       if (!apiRes.ok) {
         return NextResponse.json({
           status: apiRes.status,
           message: apiRes.statusText,
         })
       }
-      const resultsMatch = await Promise.allSettled(
-        result?.map(async (id) => {
-          const gameRes = await fetch(`https://americas.api.riotgames.com/lol/match/v5/matches/${id}`, {
-            headers: {
-              'X-Riot-Token': RiotApiKey,
-            }
-          })
-          return gameRes.json()
+      const resultsMatch = await Promise.all(
+        result.map(async (id) => {
+          try {
+            const res = await fetch(
+              `https://americas.api.riotgames.com/lol/match/v5/matches/${id}`,
+              { headers: { "X-Riot-Token": RiotApiKey } }
+            );
+
+            if (!res.ok) throw new Error(`Error al obtener partida ${id}`);
+            const data = await res.json();
+            return data
+          } catch (error) {
+            return null
+          }
         })
       );
       const response = {
@@ -112,6 +128,8 @@ export async function GET(req) {
         user,
         stats,
       }
+
+
       return new Response(
         JSON.stringify({
           response,
@@ -119,14 +137,11 @@ export async function GET(req) {
           message: 'Se ha encontrado el usuario'
         }))
     } else {
-      console.log("Esto se qejecuta cuando el matchs es false lo que significa que no se ejecuta el fetch de las partidas")
-      console.log(matchs)
       const response = {
-        matchs : null,
+        matchs: null,
         user,
         stats,
       }
-      console.log(response)
       return new Response(
         JSON.stringify({
           response,

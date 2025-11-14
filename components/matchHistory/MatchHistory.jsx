@@ -13,27 +13,37 @@ export const MatchHistory = () => {
         <InfoSumonner dataSumonner={dataSumonner} version={version} />
         <RecentGames dataSumonner={dataSumonner} version={version} />
       </div>
-      
-      <main className="w-full mt-2 space-y-1.5">      
+
+      <main className="w-full mt-2 space-y-1.5">
         {
           dataSumonner?.matchs?.map((item, index) => {
-            const puiidPlayers = item.value.info.participants.find((item) =>
+            const puiidPlayers = item.info.participants.find((item) =>
               item.puuid === dataSumonner?.user.puuid)
-            const team1 = item.value.info.participants.filter((item) => item.teamId === 100)
-            const team2 = item.value.info.participants.filter((item) => item.teamId === 200)
-            const gameCreation = new Date(item.value.info.gameCreation).toLocaleDateString()
-            const gameDurationMinutes = (item.value.info.gameDuration / 60).toFixed(0)
-            const gameMode = item.value.info.gameMode
+            const team1 = item.info.participants.filter((item) => item.teamId === 100)
+            const team2 = item.info.participants.filter((item) => item.teamId === 200)
+            const gameCreation = new Date(item.info.gameCreation).toLocaleDateString()
+            const gameDurationMinutes = (item.info.gameDuration / 60).toFixed(0)
+            const gameMode = item.info.gameMode
+            const date = new Date(item.info.gameCreation);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
             return (
               <div key={index} >
-                <Match 
-                dataPlayer={puiidPlayers} 
-                dataPlayers={item.value.info.participants}
-                team1={team1} 
-                team2={team2} 
-                gameCreation={gameCreation} 
-                gameDurationMinutes={gameDurationMinutes} 
-                gameMode={gameMode}/>
+                <Match
+                  dataPlayer={puiidPlayers}
+                  dataPlayers={item.info.participants}
+                  team1={team1}
+                  team2={team2}
+                  gameCreation={gameCreation}
+                  gameDurationMinutes={gameDurationMinutes}
+                  gameMode={gameMode}
+                  gameTimeCreation={formattedDate.toLocaleString('es-CO')}
+                />
               </div>
             )
           })

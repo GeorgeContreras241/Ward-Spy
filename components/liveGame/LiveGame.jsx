@@ -10,7 +10,7 @@ export const LiveGame = ({ puuid }) => {
 
     const getData = async () => {
         const data = await setDataLiveGame({ puuid, setLoading })
-        setData(data) 
+        setData(data)
     }
     useEffect(() => {
         getData()
@@ -20,7 +20,8 @@ export const LiveGame = ({ puuid }) => {
         <div className="max-w-5xl mx-auto w-full">
             {loading && <Loader />}
             {data?.data && <TableLIveGame data={data?.data} />}
-            {data?.inGame === false && <p className="text-center font-semibold text-sm mt-6">Upps No esta en partida</p>}
+            {data?.inGame === false && !loading && <div className="h-40 flex justify-center items-center">
+                <p className="h-fit text-center font-semibold text-sm">Upps No esta en partida</p></div>}
         </div>
     )
 }

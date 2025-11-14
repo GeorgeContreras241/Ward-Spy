@@ -167,7 +167,9 @@
 body {
   letter-spacing: var(--tracking-normal);
 }
-
+body{
+  overflow-x: hidden;
+}
 
 @layer base {
   * {

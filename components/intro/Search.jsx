@@ -14,16 +14,18 @@ const MAX_TAG_LENGTH = 4;
 const RIOT_ID_PATTERN = /^[^#]+#[A-Za-z0-9]{1,4}$/;
 
 export const Search = () => {
+  // Timer
+  const [coolDown, setCoolDown] = useState(0)
+  console.log(coolDown)
   //Routing
   const router = useRouter()
   const pathname = usePathname()
   const routeName = pathname.split('/').pop(1, 2)
   //Store
   const { setVersion, seturlListSpell, seturlListChamp, setDataNameTag, loading,
-    setDataPuuid, setDataSumonner } = useSumonnerStore()
+    setDataPuuid, setDataSumonner,setLoading, errorCounter, setErrorCounter, setError  } = useSumonnerStore()
   //State
   const [riotId, setRiotId] = useState('')
-  const [error, setError] = useState('')
   const [dataName, dataTag] = riotId.split('#')
   //Fetch
   const { data: dragonData, error: fetchError } = useFetch("/api/dataDragon")
@@ -68,6 +70,14 @@ export const Search = () => {
     router.push(`/summoner/${encodedName}-${encodedTag}`)
   }
 
+  useEffect(() => {
+    if(!coolDown) return
+    const interval = setInterval(()=> {
+      setCoolDown(prev => Math.max(prev - 1, 0))
+    },1000)
+    return () => clearInterval(interval)
+  }, [coolDown])
+
 
   const handleUpdate = async (riotId) => {
     const [dataName, dataTag] = riotId.split('#');
@@ -75,17 +85,25 @@ export const Search = () => {
       console.error('Invalid Riot ID format. Expected format: name#tag');
       return;
     }
-    setDataSumonner(null);
+    setError(null)
+    setLoading(true)
     try {
       const res = await fetch(`/api/updateSumonner`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ dataName, dataTag }),
       })
-      if (!res.ok) throw new Error('Error en la respuesta del servidor');
+      if (!res.ok){
+        throw new Error(`Error al actualizar el perfil: ${res.statusText}`)
+      };
       const data = await res.json()
+      if(!data.ok){
+        setCoolDown(data.message)
+        setErrorCounter(coolDown + ' segundos') 
+        return
+      }
       const newPlayer = {
-        user: data.response.playerRes,
+        user: data.response.player,
         matchs: data.response.matchs,
         stats: data.response.stats
       }
@@ -94,7 +112,9 @@ export const Search = () => {
       setDataSumonner(newPlayer)
       setDataLocalStorage(newPlayer.matchs, newPlayer.user.puuid, newPlayer.user.summonerName)
     } catch (error) {
-      console.error('Error al actualizar los datos:', error);
+      console.error( error);
+    }finally{
+      setLoading(false)
     }
   }
 
@@ -149,7 +169,6 @@ export const Search = () => {
               onChange={e => setRiotId(e.target.value)}
               pattern={'[^#]+#[A-Za-z0-9]{1,4}'}
               title='Formato: GameName#TAG (TAG de 1 a 4 caracteres alfanuméricos)'
-              aria-invalid={Boolean(error)}
               aria-describedby='riotIdError'
               autoCapitalize='off'
               autoCorrect='off'
@@ -164,7 +183,7 @@ export const Search = () => {
               aria-live='assertive'
               id='riotIdError'
             >
-              {error}
+            
             </span>
             <div className='flex flex-row gap-2'>
               <Button
@@ -172,8 +191,9 @@ export const Search = () => {
                 className='bg-primary-foreground text-background text-xs font-bold w-fit h-8 rounded-[0.5rem] hover:bg-primary-foreground/90 cursor-pointer'
                 aria-label='Actualizar'
                 onClick={() => handleUpdate(riotId)}
+                disabled={loading || coolDown != 0}
               >
-                {loading ? <Spinner className='h-4 w-3 scale-150 flex items-center justify-center' /> : "Actualizar"}
+                {loading ? "Actualizando..." : "Actualizar"+(coolDown ? " "+coolDown+"" : "")}
               </Button>
               <Button
                 type='submit'

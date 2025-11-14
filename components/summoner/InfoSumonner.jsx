@@ -1,6 +1,7 @@
 import { League  } from "@/components/summoner/League"
 
 export const InfoSumonner = ({ dataSumonner }) => {
+    const playerTag = dataSumonner?.user.summonerName.split('#')
     return (
         <aside className=" w-full h-fit bg-card border border-border rounded-[0.5rem] p-4 space-y-2">
             <article className="bg-secondary p-3 rounded-[var(--radius)] border-l-4 border-purple-600">
@@ -16,8 +17,8 @@ export const InfoSumonner = ({ dataSumonner }) => {
                         </span>
                     </div>
                     <div className="flex-1 min-w-0">
-                        <h2 className="text-sm font-bold text-white truncate">{dataSumonner?.user.summonerName}</h2>
-                        <p className="text-xs text-purple-300">#{dataSumonner?.user.tagLine}</p>
+                        <h2 className="text-sm font-bold text-white truncate">{playerTag[0]}</h2>
+                        <p className="text-xs text-purple-300">#{playerTag[1]}</p>
                     </div>
                 </div>
             </article>

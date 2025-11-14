@@ -14,7 +14,7 @@ export const LeagueLiveGame = ({ leagueInfo, compact = false }) => {
         return (
             <div className="bg-card border border-border rounded-[var(--radius)] p-1.5 shadow-xs w-full">
                 <div className="flex items-center justify-between gap-2">
-                    <div className="flex-1 flex items-center gap-2 min-w-0">
+                    <div className="flex items-center gap-2 min-w-0">
                         <div className="w-6 h-6 shrink-0">
                             <img
                                 src={`https://raw.communitydragon.org/14.20/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-emblem/emblem-${tier.toLowerCase()}.png`}

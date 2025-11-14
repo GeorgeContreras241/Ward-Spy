@@ -8,7 +8,7 @@ export const RecentGames = ({ dataSumonner, version }) => {
                 // Calculate statistics
                 const matches = dataSumonner.matchs;
                 const playerMatches = matches?.map(match =>
-                    match.value.info.participants.find(p => p.puuid === dataSumonner.user.puuid)  
+                    match.info.participants.find(p => p.puuid === dataSumonner.user.puuid)  
                 );
                                 // Calculate win rate
                 const wins = playerMatches?.filter(match => match.win).length;

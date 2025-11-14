@@ -8,33 +8,42 @@ import { setDataLocalStorage } from "@/app/utils/setLocalStoraje"
 import { verifyPlayerStorage } from "@/app/utils/verifyPlayerStorage"
 import { PagePrimary } from "@/components/summoner/PagePrimary"
 import { replaceLocalStorage } from "@/app/utils/replaceLocalStorage"
+import { deleteLocalStorage } from "@/app/utils/deleteLocalStorage"
 
 const page = ({ params }) => {
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(false)
   const [routerPath, setRouterPath] = useState(1)
-  const { dataSumonner, setDataSumonner, setDataPuuid } = useSumonnerStore()
+  const { dataSumonner, setDataSumonner, setDataPuuid, setError, error, loading, setLoading } = useSumonnerStore()
   const { summonerName } = use(params)
   const newDate = summonerName.split('-')
 
   useEffect(() => {
+    deleteLocalStorage()
     verifyPlayerStorage(setDataPuuid)
     getData()
   }, [])
 
+
+
   const getData = async () => {
+    setError(null)
     setLoading(true)
     setDataSumonner(null)
     const [nameTag, dataTag] = newDate
-    const { matchHistoryJson, nameTagStorage } = testingLocalStorage()
+    const { matchHistoryJson, nameTagStorage, puuidStorage } = testingLocalStorage()
     if (nameTagStorage == summonerName) {
       try {
         const dataFetch = await setDataFetch(nameTag, dataTag, false)
+        if (dataFetch.results.status != 200) {
+          replaceLocalStorage()
+          setError(dataFetch.results.message + dataFetch.results.status)
+          setLoading(false)
+        }
         const newPlayer = {
           ...dataFetch.results.infoSummoner,
           matchs: matchHistoryJson
         }
-        setDataPuuid(newPlayer.puuid)
+        
+        setDataPuuid(puuidStorage)
         setDataSumonner(newPlayer)
         setDataLocalStorage(newPlayer.matchs, newPlayer.puuid, summonerName)
       } catch (error) {
@@ -52,6 +61,7 @@ const page = ({ params }) => {
           setLoading(false)
         } else {
           const newPlayer = dataFetch.results.infoSummoner
+          console.log(dataFetch)
           setDataPuuid(newPlayer.puuid)
           setDataSumonner(newPlayer)
           setDataLocalStorage(newPlayer.matchs, newPlayer.puuid, summonerName)
