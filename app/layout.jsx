@@ -1,10 +1,10 @@
 "use client"
 import { useState, useEffect } from "react";
 import { Cinzel, Caudex, Montserrat } from 'next/font/google';
-import { Navbar } from "@/components/intro/Navbar";
-import { Search } from "@/components/intro/Search";
-import "./globals.css";
-import { Footer } from "@/components/welcome/Footer";
+import { Navbar } from "@/components/ui/Navbar";
+import { Search } from "@/components/home/Search";
+import "@/styles/globals.css";
+import { Footer } from "@/components/home/Footer";
 
 const cinzel = Cinzel({
   subsets: ['latin'],

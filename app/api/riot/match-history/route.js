@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import dbConnect from '@/lib/db'
 import Player from '@/lib/models/players'
 import Stat from '@/lib/models/stats'
-import getDataPuuid from '@/app/utils/setFetchApi'
+import getDataPuuid from '@/lib/setFetchApi'
 
 
 export async function GET(req) {

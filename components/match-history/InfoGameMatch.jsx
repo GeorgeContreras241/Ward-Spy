@@ -1,5 +1,5 @@
 "use client"
-import { PlayerList } from "@/components/matchHistory/PlayerList"
+import { PlayerList } from "@/components/match-history/PlayerList"
 import { Chart } from "@/components/summoner/Chart"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"

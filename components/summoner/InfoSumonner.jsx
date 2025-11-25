@@ -47,13 +47,13 @@ export const InfoSumonner = ({ dataSumonner }) => {
                     )}
                     {!dataSumonner.stats.flexSolo?.tier && !dataSumonner.stats.flexFlex?.tier && (
                         <div className="bg-[#1e1a22] p-4 rounded-lg text-center">
-                            <p className="text-sm text-gray-400">No ranked data available</p>
+                            <p className="text-sm text-gray-400">Unranked</p>
                         </div>
                     )}
                 </>
             ) : (
                 <div className="bg-[#1e1a22] p-4 rounded-lg text-center">
-                    <p className="text-sm text-gray-400">No ranked data available</p>
+                    <p className="text-sm text-gray-400">Unranked</p>
                 </div>
             )}
         </aside>

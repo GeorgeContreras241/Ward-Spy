@@ -1,6 +1,6 @@
 "use client"
-import { useSumonnerStore } from "@/app/store/SummonerStore"
-import { LeagueLiveGame } from "@/components/liveGame/LeagueLiveGame.jsx"
+import { useSumonnerStore } from "@/store/SummonerStore"
+import { LeagueLiveGame } from "@/components/live-game/LeagueLiveGame.jsx"
 import Link from "next/link"
 
 export const TableLIveGame = ({ data }) => {

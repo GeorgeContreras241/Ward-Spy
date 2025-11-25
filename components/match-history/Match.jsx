@@ -1,13 +1,12 @@
 "use client"
 import { Tooltip } from "react-tooltip";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { InfoGameMatch } from "@/components/matchHistory/InfoGameMatch";
-import { useSumonnerStore } from "@/app/store/SummonerStore";
+import { InfoGameMatch } from "@/components/match-history/InfoGameMatch";
+import { useSumonnerStore } from "@/store/SummonerStore";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1, team2, gameCreation, gameDurationMinutes, gameMode, gameTimeCreation }) => {
-  console.log(gameTimeCreation)
   const router = useRouter()
   const [show, setShow] = useState(false)
 
@@ -41,6 +40,40 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
     dataPlayer.item0, dataPlayer.item1, dataPlayer.item2,
     dataPlayer.item3, dataPlayer.item4, dataPlayer.item5, dataPlayer.item6
   ] : [];
+
+
+
+  const dificultyRival = (rivalStats) => {
+    const { kills, deaths, Cs, killParticipation } = rivalStats;
+
+    if (kda >= 5) score += 3;
+    else if (kda >= 3) score += 2;
+    else if (kda >= 1.5) score += 1;
+
+    if (damage >= 30000) score += 3;
+    else if (damage >= 20000) score += 2;
+    else if (damage >= 10000) score += 1;
+
+    if (csPerMin >= 7) score += 2;
+    else if (csPerMin >= 5) score += 1;
+
+    if (killParticipation >= 0.7) score += 2;
+    else if (killParticipation >= 0.5) score += 1;
+
+    return score;
+  }
+
+  const game = `Partida 1
+  campeon: ${dataPlayer.championName},
+  Resultado: ${dataPlayer.win ? 'Victoria' : 'Derrota'},
+  kda: ${kdaRatio},
+  cs/min: ${csPerMin},
+  oro: ${dataPlayer.goldEarned},
+  daño: ${dataPlayer.totalDamageDealtToChampions},
+  daño recibido: ${dataPlayer.totalDamageTaken},
+  vision: ${dataPlayer.visionScore},
+  objetivos: ${dataPlayer.objectives?.total || 0}`;
+
   return (
     <section className="flex flex-col items-center ">
       <article
@@ -54,6 +87,11 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
             <img
               src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${dataPlayer?.championName}.png` || '/default-champion.png'}
               alt={dataPlayer?.championName || 'Champion'}
+              width={56}
+              height={56}
+              loading="lazy"
+              decoding="async"
+              fetchPriority="low"
               className='w-full h-full object-cover aspect-square border rounded-full border-border'
               onError={(e) => {
                 if (e.target.src.endsWith('default-champion.png')) return;
@@ -70,6 +108,9 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
                   src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${urlListSpell[dataPlayer.summoner1Id] || 'SummonerFlash'}`}
                   className='w-full h-full object-cover'
                   alt='Summoner Spell 1'
+                  decoding="async"
+                  fetchPriority="low"
+                  loading="lazy"
                   onError={(e) => {
                     if (e.target.src.endsWith('default-spell.png')) return;
                     e.target.src = '/default-spell.png';
@@ -83,6 +124,9 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
                   src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${urlListSpell[dataPlayer.summoner2Id] || 'SummonerHeal'}`}
                   className='w-full h-full object-cover'
                   alt='Summoner Spell 2'
+                  decoding="async"
+                  fetchPriority="low"
+                  loading="lazy"
                   onError={(e) => {
                     if (e.target.src.endsWith('default-spell.png')) return;
                     e.target.src = '/default-spell.png';
@@ -116,11 +160,11 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
 
         {/* Stats */}
         <section className='stats flex flex-col justify-center items-start text-xs min-w-[80px] shrink-0 border-l border-border border-chart-1 pl-[5px]'>
-            <span className="text-popover-foreground" data-tooltip-id="infoPlayer" data-tooltip-content="Minions">{dataPlayer?.totalMinionsKilled} ({csPerMin})</span>
-            <span className="text-popover-foreground" data-tooltip-id="infoPlayer" data-tooltip-content="Gold">{(dataPlayer?.goldEarned / 1000).toFixed(1)}k</span>
-            <span className="text-popover-foreground" data-tooltip-id="infoPlayer" data-tooltip-content="Damage">{(dataPlayer?.totalDamageDealtToChampions / 1000).toFixed(1)}k</span>
-            <span className="text-popover-foreground" data-tooltip-id="infoPlayer" data-tooltip-content="Duration">{gameDurationMinutes} min</span>
-            <span className="text-xs tracking-wide w-full" data-tooltip-id="infoPlayer" data-tooltip-content={gameTimeCreation}>{gameCreation}</span>
+          <span className="text-popover-foreground" data-tooltip-id="infoPlayer" data-tooltip-content="Minions">{dataPlayer?.totalMinionsKilled} ({csPerMin})</span>
+          <span className="text-popover-foreground" data-tooltip-id="infoPlayer" data-tooltip-content="Gold">{(dataPlayer?.goldEarned / 1000).toFixed(1)}k</span>
+          <span className="text-popover-foreground" data-tooltip-id="infoPlayer" data-tooltip-content="Damage">{(dataPlayer?.totalDamageDealtToChampions / 1000).toFixed(1)}k</span>
+          <span className="text-popover-foreground" data-tooltip-id="infoPlayer" data-tooltip-content="Duration">{gameDurationMinutes} min</span>
+          <span className="text-xs tracking-wide w-full" data-tooltip-id="infoPlayer" data-tooltip-content={gameTimeCreation}>{gameCreation}</span>
         </section>
 
         <section className='sm:flex flex-row gap-1 py-1 align-center justify-center hidden'>
@@ -133,6 +177,9 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
                   }}
                   data-tooltip-id="my-tooltip"
                   data-tooltip-content={item.riotIdGameName + "#" + item.riotIdTagline}
+                  decoding="async"
+                  fetchPriority="low"
+                  loading="lazy"
                   data-tooltip-place="top"
                 >
                   <img src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${item?.championName}.png`}
@@ -155,10 +202,13 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
                   }}
                   data-tooltip-id="my-tooltip"
                   data-tooltip-content={item.riotIdGameName + "#" + item.riotIdTagline}
+                  decoding="async"
+                  fetchPriority="low"
+                  loading="lazy"
                   data-tooltip-place="top"
                 >
                   <img src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${item?.championName}.png`}
-                    className="h-4.5 w-4.5 border border-border rounded-[var(--radius)]" alt={item?.championName} title={item?.championName}  loading="lazy"/>
+                    className="h-4.5 w-4.5 border border-border rounded-[var(--radius)]" alt={item?.championName} title={item?.championName} loading="lazy" />
                   <span
                     className={`flex text-[.7rem] h-[10px] items-center truncate ${item.riotIdGameName === dataPlayer.riotIdGameName ?
                       'text-chart-3 font-semibold' : 'text-muted-foreground'}`}
@@ -181,6 +231,9 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
                       src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/item/${item}.png`}
                       className='w-full h-full object-cover'
                       alt={`Item ${index + 1}`}
+                      decoding="async"
+                      fetchPriority="low"
+                      loading="lazy"
                     />
                   </div>
                 )
@@ -204,6 +257,9 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
                     src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/item/${items[6]}.png`}
                     className='w-full h-full object-cover'
                     alt='Trinket'
+                    decoding="async"
+                    fetchPriority="low"
+                    loading="lazy"
                   />
                 </div>
 
@@ -229,8 +285,8 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
           </div>
         ) : null
       }
-      <Tooltip id="my-tooltip" className="!text-[.7rem] !opacity-60 !p-1 !bg-secondary/90 !font-bold !text-neutral-300"/>
-      <Tooltip id="infoPlayer" className="!p-1 !text-[9px] !opacity-30 !bg-secondary/90 !font-bold !text-white"/>
+      <Tooltip id="my-tooltip" className="!text-[.7rem] !opacity-60 !p-1 !bg-secondary/90 !font-bold !text-neutral-300" />
+      <Tooltip id="infoPlayer" className="!p-1 !text-[9px] !opacity-30 !bg-secondary/90 !font-bold !text-white" />
     </section>
 
   )

@@ -2,13 +2,13 @@
 
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { useSumonnerStore } from '@/app/store/SummonerStore'
-import { useFetch } from '@/app/hooks/useFetch'
+import { useSumonnerStore } from '@/store/SummonerStore'
+import { useFetch } from '@/hooks/useFetch'
 import { Spinner } from '@/components/ui/shadcn-io/spinner'
 import { Button } from '@/components/ui/button'
 import { usePathname } from 'next/navigation'
-import { replaceLocalStorage } from '@/app/utils/replaceLocalStorage'
-import { setDataLocalStorage } from '@/app/utils/setLocalStoraje'
+import { replaceLocalStorage } from '@/utils/replaceLocalStorage'
+import { setDataLocalStorage } from '@/utils/setLocalStoraje'
 
 const MAX_TAG_LENGTH = 4;
 const RIOT_ID_PATTERN = /^[^#]+#[A-Za-z0-9]{1,4}$/;
@@ -28,7 +28,7 @@ export const Search = () => {
   const [riotId, setRiotId] = useState('')
   const [dataName, dataTag] = riotId.split('#')
   //Fetch
-  const { data: dragonData, error: fetchError } = useFetch("/api/dataDragon")
+  const { data: dragonData, error: fetchError } = useFetch("/api/images/data-dragon")
 
   useEffect(() => {
     if (dragonData) {

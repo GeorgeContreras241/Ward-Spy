@@ -14,7 +14,6 @@ export const Navbar = ({ toggleMode, mode }) => {
     const newValue = e.target.value
     if (newValue) router.push(newValue)
   }
-
   return (
     <nav className='bg-background border-b border-border font-mono' aria-label="Navegación principal">
       {/* Skip to main content for better accessibility */}
@@ -32,7 +31,8 @@ export const Navbar = ({ toggleMode, mode }) => {
         {/* Desktop Navigation */}
         <div className='hidden md:flex items-center gap-6'>
           <Link
-            href="/ia"
+            href="#"
+            data-tooltip-id="titles" data-tooltip-content="No disponible"
             className="text-primary-foreground text-sm font-bold"
             title="IA"
             aria-current={pathname === '/ia' ? 'page' : undefined}
@@ -41,6 +41,7 @@ export const Navbar = ({ toggleMode, mode }) => {
           </Link>
           <a
             href="https://github.com/GeorgeContreras241"
+            data-tooltip-id="titles" data-tooltip-content="Ir a la página de GitHub"
             target="_blank"
             rel="noopener noreferrer"
             className="text-primary-foreground hover:scale-105 p-2 rounded-full hover:bg-accent transition-transform"

@@ -1,16 +1,17 @@
-
-
-import { VideoHero } from "@/components/welcome/VideoHero";
-import { FeaturesSection } from "@/components/welcome/FeaturesSection";
-import { AboutSection } from "@/components/welcome/AboutSection";
+"use client"
+import { VideoHero } from "@/components/home/VideoHero";
+import { FeaturesSection } from "@/components/home/FeaturesSection";
+import { AboutSection } from "@/components/home/AboutSection";
 
 export default function Home() {
+
+
   return (
     <main className="max-w-5xl mx-auto">
       <VideoHero />
       <FeaturesSection />
       <AboutSection />
-      
+
       {/* CTA Section */}
       <section className="py-8 bg-background border-t">
         <div className="container mx-auto px-4 text-center">
@@ -19,12 +20,12 @@ export default function Home() {
             <p className="text-xs text-muted-foreground mb-4">
               Únete a la comunidad de Ward Spy y lleva tu juego al siguiente nivel.
             </p>
-            <a 
+            <a
               href="/summoner"
               className="inline-flex items-center px-4 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90 transition-colors"
             >
               Empezar ahora
-              </a>
+            </a>
           </div>
         </div>
       </section>

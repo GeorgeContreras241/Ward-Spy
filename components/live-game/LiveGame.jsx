@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react"
 import { TableLIveGame } from "./TableLIveGame"
 import { Loader } from "@/components/ui/Loader"
-import { setDataLiveGame } from "@/app/utils/setDataLiveGame"
+import { setDataLiveGame } from "@/lib/setDataLiveGame"
 
 export const LiveGame = ({ puuid }) => {
     const [loading, setLoading] = useState(false)

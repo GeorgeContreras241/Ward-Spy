@@ -1,16 +1,17 @@
 "use client"
 import { useEffect, use, useState } from "react"
-import { useSumonnerStore } from "@/app/store/SummonerStore"
+import { useSumonnerStore } from "@/store/SummonerStore"
 import { Loader } from "@/components/ui/Loader"
-import { setDataFetch } from "@/app/utils/setDataFetch"
-import { testingLocalStorage } from "@/app/utils/testingLocalStorage"
-import { setDataLocalStorage } from "@/app/utils/setLocalStoraje"
-import { verifyPlayerStorage } from "@/app/utils/verifyPlayerStorage"
+import { setDataFetch } from "@/lib/setDataFetch"
+import { testingLocalStorage } from "@/utils/testingLocalStorage"
+import { setDataLocalStorage } from "@/utils/setLocalStoraje"
+import { verifyPlayerStorage } from "@/utils/verifyPlayerStorage"
 import { PagePrimary } from "@/components/summoner/PagePrimary"
-import { replaceLocalStorage } from "@/app/utils/replaceLocalStorage"
-import { deleteLocalStorage } from "@/app/utils/deleteLocalStorage"
+import { replaceLocalStorage } from "@/utils/replaceLocalStorage"
+import { deleteLocalStorage } from "@/utils/deleteLocalStorage"
 
 const page = ({ params }) => {
+  const [itemsInfo, setItemsInfo] = useState(null)
   const [routerPath, setRouterPath] = useState(1)
   const { dataSumonner, setDataSumonner, setDataPuuid, setError, error, loading, setLoading } = useSumonnerStore()
   const { summonerName } = use(params)
@@ -21,6 +22,16 @@ const page = ({ params }) => {
     verifyPlayerStorage(setDataPuuid)
     getData()
   }, [])
+
+  useEffect(() => {
+    const Apicall = async (id = 20000) => {
+      const res = await fetch(`/api/info-items?id=${id}`)
+      const data = await res.json()
+      setItemsInfo(data)
+    }
+    Apicall()
+  }, [])
+
 
 
 
@@ -42,10 +53,10 @@ const page = ({ params }) => {
           ...dataFetch.results.infoSummoner,
           matchs: matchHistoryJson
         }
-        
+
         setDataPuuid(puuidStorage)
         setDataSumonner(newPlayer)
-        setDataLocalStorage(newPlayer.matchs, newPlayer.puuid, summonerName)
+        setDataLocalStorage(newPlayer.matchs, newPlayer.user.puuid, summonerName)
       } catch (error) {
         setError(error)
       } finally {
@@ -55,16 +66,14 @@ const page = ({ params }) => {
       replaceLocalStorage()
       try {
         const dataFetch = await setDataFetch(nameTag, dataTag, true)
-        console.log(dataFetch)
         if (dataFetch.results.status != 200) {
           setError(dataFetch.results.message + dataFetch.results.status)
           setLoading(false)
         } else {
           const newPlayer = dataFetch.results.infoSummoner
-          console.log(dataFetch)
-          setDataPuuid(newPlayer.puuid)
+          setDataPuuid(newPlayer.user.puuid)
           setDataSumonner(newPlayer)
-          setDataLocalStorage(newPlayer.matchs, newPlayer.puuid, summonerName)
+          setDataLocalStorage(newPlayer.matchs, newPlayer.user.puuid, summonerName)
         }
       } catch (error) {
         setError(error)

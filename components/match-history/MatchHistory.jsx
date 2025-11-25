@@ -1,7 +1,7 @@
 "use client"
-import { useSumonnerStore } from "@/app/store/SummonerStore"
+import { useSumonnerStore } from "@/store/SummonerStore"
 import { InfoSumonner } from "@/components/summoner/InfoSumonner"
-import { Match } from "@/components/matchHistory/Match"
+import { Match } from "@/components/match-history/Match"
 import { RecentGames } from "@/components/summoner/RecentGames"
 
 export const MatchHistory = () => {
