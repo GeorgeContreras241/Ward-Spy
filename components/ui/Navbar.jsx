@@ -1,19 +1,11 @@
 "use client"
 import { ButtonLeave } from "@/components/ui/ButtonLeave"
 import Link from 'next/link'
-import { useRouter, usePathname } from 'next/navigation'
-import { ButtonMode } from '@/components/ui/ButtonMode'
 import { FaGithub } from "react-icons/fa"
 import { Tooltip } from "react-tooltip"
 
-export const Navbar = ({ toggleMode, mode }) => {
-  const router = useRouter()
-  const pathname = usePathname()
+export const Navbar = () => {
 
-  const handleChange = (e) => {
-    const newValue = e.target.value
-    if (newValue) router.push(newValue)
-  }
   return (
     <nav className='bg-background border-b border-border font-mono' aria-label="Navegación principal">
       {/* Skip to main content for better accessibility */}
@@ -24,7 +16,7 @@ export const Navbar = ({ toggleMode, mode }) => {
       >
         <Link href="/"
           data-tooltip-id="titles" data-tooltip-content="Ir a la página principal"
-          className="font-caudex text-sm md:text-2xl font-bold text-primary-foreground hover:opacity-90 flex flex-row-reverse items-center gap-2 justify-between" aria-current={pathname === '/' ? 'page' : undefined}>
+          className="font-caudex text-sm md:text-2xl font-bold text-primary-foreground hover:opacity-90 flex flex-row-reverse items-center gap-2 justify-between">
           Lolcito Espia
           <ButtonLeave />
         </Link>
@@ -35,7 +27,6 @@ export const Navbar = ({ toggleMode, mode }) => {
             data-tooltip-id="titles" data-tooltip-content="No disponible"
             className="text-primary-foreground text-sm font-bold"
             title="IA"
-            aria-current={pathname === '/ia' ? 'page' : undefined}
           >
             IA
           </Link>
@@ -49,13 +40,12 @@ export const Navbar = ({ toggleMode, mode }) => {
           >
             <FaGithub className="h-6 w-6" />
           </a>
-          <ButtonMode toggleMode={toggleMode} mode={mode} />
+
         </div>
         {/* Mobile Navigation */}
         <label htmlFor="mobile-nav" className="sr-only">Menú de navegación</label>
         <select
           id="mobile-nav"
-          onChange={handleChange}
           className='md:hidden bg-gray-800 text-white text-sm rounded px-3 py-1 border border-gray-600'
           aria-label="Menú de navegación"
           defaultValue=""

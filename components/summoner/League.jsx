@@ -10,7 +10,7 @@ export const League = ({ item, queueType, tier, rank, winRate }) => {
                 <img
                     src={`https://raw.communitydragon.org/14.20/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-emblem/emblem-${item.tier.toLowerCase()}.png`}
                     alt={tier}
-                    className="h-8 w-8 object-cover scale-250"
+                    className="h-8 w-8 object-cover scale-300"
                 />
             </div>
             <div className="flex-1 min-w-0">
@@ -21,11 +21,11 @@ export const League = ({ item, queueType, tier, rank, winRate }) => {
                 <div className="flex items-center justify-between text-xs mt-0.5">
                     <span className="text-white font-medium">{tier} {rank}</span>
                     <div className="flex items-center gap-1">
-                        <span className="text-amber-400">{item.wins}W</span>
+                        <span className="text-green-400">{item.wins}W</span>
                         <span className="text-gray-400">•</span>
-                        <span className="text-red-400">{item.losses}L</span>
+                        <span className="text-red-500">{item.losses}L</span>
                         <span className="text-gray-400">•</span>
-                        <span className={winRate >= 50 ? 'text-destructive' : 'text-chart-2'}>{winRate}%</span>
+                        <span className="text-blue-400">{winRate}%</span>
                     </div>
                 </div>
                 <div className="w-full bg-gray-700 rounded-full h-1 mt-1">

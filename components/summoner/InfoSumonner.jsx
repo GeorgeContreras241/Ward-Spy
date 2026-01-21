@@ -1,6 +1,6 @@
-import { League  } from "@/components/summoner/League"
+import { League } from "@/components/summoner/League"
 
-export const InfoSumonner = ({ dataSumonner }) => {
+export const InfoSumonner = ({ dataSumonner,version }) => {
     const playerTag = dataSumonner?.user.summonerName.split('#')
     return (
         <aside className=" w-full h-fit bg-card border border-border rounded-[0.5rem] p-4 space-y-2">
@@ -8,11 +8,11 @@ export const InfoSumonner = ({ dataSumonner }) => {
                 <div className="flex items-center gap-2">
                     <div className="relative">
                         <img
-                            src={`https://ddragon.leagueoflegends.com/cdn/15.16.1/img/profileicon/${dataSumonner?.user.profileIconId}.png`}
+                            src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${dataSumonner?.user.profileIconId}.png`}
                             alt="Profile"
                             className="h-14 w-14 rounded-full border-2 border-purple-500"
                         />
-                        <span className="absolute -bottom-1 -right-1 bg-[#0f111a] text-xs px-1.5 py-0.5 rounded-full border border-purple-500">
+                        <span className="absolute -bottom-1 -right-1 bg-[#0f111a] text-[.7rem]  px-1.5 py-0.5 rounded-full border border-purple-500">
                             {dataSumonner?.user.summonerLevel}
                         </span>
                     </div>
@@ -22,7 +22,6 @@ export const InfoSumonner = ({ dataSumonner }) => {
                     </div>
                 </div>
             </article>
-
             {dataSumonner?.stats ? (
                 <>
                     {dataSumonner.stats.flexSolo?.tier && (

@@ -11,46 +11,32 @@ import { replaceLocalStorage } from '@/utils/replaceLocalStorage'
 import { setDataLocalStorage } from '@/utils/setLocalStoraje'
 
 const MAX_TAG_LENGTH = 4;
-const RIOT_ID_PATTERN = /^[^#]+#[A-Za-z0-9]{1,4}$/;
 
 export const Search = () => {
   // Timer
   const [coolDown, setCoolDown] = useState(0)
-  console.log(coolDown)
+  const [errorCounter, setErrorCounter] = useState('')
   //Routing
   const router = useRouter()
   const pathname = usePathname()
   const routeName = pathname.split('/').pop(1, 2)
   //Store
-  const { setVersion, seturlListSpell, seturlListChamp, setDataNameTag, loading,
-    setDataPuuid, setDataSumonner,setLoading, errorCounter, setErrorCounter, setError  } = useSumonnerStore()
+  const setDataNameTag = useSumonnerStore(state => state.setDataNameTag)
+  const setDataPuuid = useSumonnerStore(state => state.setDataPuuid)
+  const setDataSumonner = useSumonnerStore(state => state.setDataSumonner)
+  const loading = useSumonnerStore(state => state.loading)
+  const setError = useSumonnerStore(state => state.setError)
+  const setLoading = useSumonnerStore(state => state.setLoading)
   //State
   const [riotId, setRiotId] = useState('')
   const [dataName, dataTag] = riotId.split('#')
-  //Fetch
-  const { data: dragonData, error: fetchError } = useFetch("/api/images/data-dragon")
-
-  useEffect(() => {
-    if (dragonData) {
-      seturlListSpell(dragonData.dataSpell)
-      seturlListChamp(dragonData.dataChamp)
-      setVersion(dragonData.version)
-    }
-  }, [dragonData])
 
   useEffect(() => {
     if (routeName.length > 1) {
       const decodedRoute = decodeURIComponent(routeName);
       setRiotId(decodedRoute.replace(/-/g, '#'));
     }
-  }, [dragonData, routeName])
-
-  useEffect(() => {
-    if (fetchError) {
-      console.error('Error al cargar datos de DataDragon:', fetchError)
-      setError('Error al cargar los datos del juego. Intenta de nuevo más tarde.')
-    }
-  }, [fetchError])
+  }, [ routeName])
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -71,10 +57,10 @@ export const Search = () => {
   }
 
   useEffect(() => {
-    if(!coolDown) return
-    const interval = setInterval(()=> {
+    if (!coolDown) return
+    const interval = setInterval(() => {
       setCoolDown(prev => Math.max(prev - 1, 0))
-    },1000)
+    }, 1000)
     return () => clearInterval(interval)
   }, [coolDown])
 
@@ -88,18 +74,18 @@ export const Search = () => {
     setError(null)
     setLoading(true)
     try {
-      const res = await fetch(`/api/updateSumonner`, {
+      const res = await fetch(`/api/riot/updateSumonner`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ dataName, dataTag }),
       })
-      if (!res.ok){
+      if (!res.ok) {
         throw new Error(`Error al actualizar el perfil: ${res.statusText}`)
       };
       const data = await res.json()
-      if(!data.ok){
+      if (!data.ok) {
         setCoolDown(data.message)
-        setErrorCounter(coolDown + ' segundos') 
+        setErrorCounter(coolDown + ' segundos')
         return
       }
       const newPlayer = {
@@ -107,13 +93,14 @@ export const Search = () => {
         matchs: data.response.matchs,
         stats: data.response.stats
       }
+      console.log(newPlayer)
       replaceLocalStorage()
       setDataPuuid(newPlayer.user.puuid)
       setDataSumonner(newPlayer)
       setDataLocalStorage(newPlayer.matchs, newPlayer.user.puuid, newPlayer.user.summonerName)
     } catch (error) {
-      console.error( error);
-    }finally{
+      console.error(error);
+    } finally {
       setLoading(false)
     }
   }
@@ -121,7 +108,7 @@ export const Search = () => {
 
   return (
     <section
-      className="bg-card  mt-1 md:mt-5 rounded-[var(--radius)] shadow-shadow-2xs max-w-5xl w-full mx-auto flex lg:flex-row flex-col border border-border"
+      className="bg-card mt-1 md:mt-5 rounded-[var(--radius)] shadow-shadow-2xs max-w-5xl w-full mx-auto flex lg:flex-row flex-col"
       aria-label='Buscador de perfiles de League of Legends'
     >
       <article
@@ -135,7 +122,8 @@ export const Search = () => {
           historial de partidas y más para mejorar tu rendimiento en el juego.
         </p>
       </article>
-      <article className='lg:w-3/5 w-full bg-dark-secondary flex flex-col justify-center items-center lg:px-4 px-2 py-2'>
+      <article className='lg:w-3/5 w-full bg-dark-secondary flex flex-col justify-center items-center 
+      lg:px-4 px-2 py-2'>
         <form
           className='w-full'
           role='search'
@@ -183,7 +171,7 @@ export const Search = () => {
               aria-live='assertive'
               id='riotIdError'
             >
-            
+
             </span>
             <div className='flex flex-row gap-2'>
               <Button
@@ -193,7 +181,7 @@ export const Search = () => {
                 onClick={() => handleUpdate(riotId)}
                 disabled={loading || coolDown != 0}
               >
-                {loading ? "Actualizando..." : "Actualizar"+(coolDown ? " "+coolDown+"" : "")}
+                {loading ? "Actualizando..." : "Actualizar" + (coolDown ? " " + coolDown + "" : "")}
               </Button>
               <Button
                 type='submit'

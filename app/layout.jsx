@@ -1,11 +1,10 @@
-"use client"
-import { useState, useEffect } from "react";
-import { Cinzel, Caudex, Montserrat } from 'next/font/google';
+
+/* import { Cinzel, Caudex, Montserrat } from 'next/font/google'; */
 import { Navbar } from "@/components/ui/Navbar";
 import { Search } from "@/components/home/Search";
-import "@/styles/globals.css";
 import { Footer } from "@/components/home/Footer";
-
+import "@/styles/globals.css";
+/* 
 const cinzel = Cinzel({
   subsets: ['latin'],
   weight: ['400', '700'],
@@ -26,38 +25,23 @@ const montserrat = Montserrat({
   variable: '--font-montserrat',
   display: 'swap',
 });
+ */
 
 
-
-export default function RootLayout({children,}) {
-
-  const [mode, setMode] = useState("dark");
-
-  const toggleMode = () => {
-    setMode(mode === "dark" ? "light" : "dark");
-    localStorage.setItem("mode", mode === "dark" ? "light" : "dark");
-  };
-
-  useEffect(() => {
-    const savedMode = localStorage.getItem("mode");
-    if (savedMode) {
-      setMode(savedMode);
-    }
-  }, [mode]);
+export default function RootLayout({ children, }) {
 
   return (
     <html lang="es">
-      <body
-        className={`overflow-y-scroll scrollbar-hide h-64 ${cinzel.variable} ${caudex.variable} ${montserrat.variable} font-sans ${mode === "dark" ? "dark" : "light"} `}
-      >
-        <div className="bg-background">
-          <Navbar toggleMode={toggleMode} mode={mode}/>
-          <Search />
-        </div>
-        <div className="min-h-[calc(100vh-64px)]">
-          {children}
-        </div>
-        <Footer />
+      <body className='overflow-y-scroll scrollbar-hide h-64 dark'  suppressHydrationWarning>
+          <div className="bg-background">
+            <Navbar/>
+            <Search />
+          </div>
+          <div className="min-h-[calc(100vh-64px)]">
+            {children}
+          </div>
+          <Footer />
+
       </body>
     </html>
   );
