@@ -3,13 +3,14 @@ import { LiveGame } from '@/components/live-game/LiveGame'
 import { NavbarMatch } from '@/components/match-history/NavbarMatch'
 import { ChampionsMostPlayed } from '@/components/champions-most-played/ChampionsMostPlayed'
 import { Clash } from '@/components/clash/Clash'
+import { MesaggeError } from '@/components/not-found/MesaggeError'
 
 
 export const PagePrimary = ({ error, dataSumonner, setRouterPath, routerPath, newDate, items,itemsInfo }) => {
     return (
         <>
             {error &&
-                <p className="text-red-500 text-center mt-20">{error}</p>
+                <MesaggeError message={error}/>
             }
             {dataSumonner && <>
                 <NavbarMatch setRouterPath={setRouterPath} />

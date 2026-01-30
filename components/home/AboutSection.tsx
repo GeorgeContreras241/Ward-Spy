@@ -33,6 +33,19 @@ export function AboutSection() {
           </div>
         </div>
 
+        <div className="mb-8 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+          <div className="flex items-start gap-3">
+            <Info className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+            <div>
+              <h3 className="font-medium text-amber-800 dark:text-amber-200">Limitaciones de la API</h3>
+              <p className="text-sm text-amber-700 dark:text-amber-300">
+                Este proyecto utiliza la API de Riot Games, que tiene límites estrictos en la cantidad de solicitudes.
+                Por esta razón, las búsquedas y actualizaciones de datos están limitadas para cumplir con estos requisitos.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div className="space-y-8">
           <div>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -64,7 +77,7 @@ export function AboutSection() {
               <div className="p-3 bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-100 dark:border-yellow-900/20 rounded-lg">
                 <h4 className="font-medium text-yellow-700 dark:text-yellow-300">Limitaciones</h4>
                 <ul className="text-sm text-yellow-600 dark:text-yellow-400 list-disc pl-5 mt-1 space-y-1">
-                  <li>Solo disponible para la región LAS (América Latina Sur)</li>
+                  <li>Solo disponible para la región LAN (Latinoamérica Norte)</li>
                   <li>Uso limitado debido a restricciones de la API de Riot Games</li>
                   <li>Algunas características como Clash están en desarrollo</li>
                 </ul>

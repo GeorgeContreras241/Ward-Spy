@@ -313,7 +313,7 @@ export const Match = ({ dataPlayer, dataPlayers, isCurrentPlayer = false, team1,
                     }}
                   />
                   <span
-                    className={`flex text-[.7rem] h-[10px] items-center truncate ${item.id === dataPlayer.it ?
+                    className={`flex text-[.7rem] h-[10px] items-center truncate ${item.id === dataPlayer.id ?
                       'text-chart-3 font-semibold border' : 'text-muted-foreground'}`}
                     title={item.rid + "#" + item.rit}
                   >{item.rid}#{item.rit}</span>

@@ -98,9 +98,6 @@ export const PlayerList = ({ player, version, urlListSpell, perks = [] }) => {
                 >
                     {player.rid || 'Summoner'}
                 </p>
-                <p className="text-[9px] md:text-[10px] text-gray-400">
-                    {player.rank || 'Unranked'}
-                </p>
             </div>
 
             {/* KDA */}

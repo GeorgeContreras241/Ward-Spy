@@ -53,8 +53,7 @@ export const InfoGameMatch = ({ dataPlayers, version, urlListSpell, perks = [] }
     return 0;
   });
 
-  console.log("sortedPlayers:", sortedPlayers);
-  console.log("selectedStat:", selectedStat);
+
   return (
     <div className="w-full bg-[#1e1e1e] rounded-lg  shadow-lg text-[11px] md:text-xs px-1">
       {/* Navigation Tabs */}
@@ -66,7 +65,7 @@ export const InfoGameMatch = ({ dataPlayers, version, urlListSpell, perks = [] }
           Graficas
         </button>
       </nav>
-
+      {console.log(sortedPlayers)}
       {/* info Player extend */}
       {activeTab === 0 && (
         <div className="grid lg:grid-cols-2 grid-cols-1 gap-3 p-1.5 ">

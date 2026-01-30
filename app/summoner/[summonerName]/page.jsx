@@ -35,6 +35,7 @@ const page = ({ params }) => {
     verifyPlayerStorage(setDataPuuid)
     getData()
   }, [])
+  
   const getData = async () => {
     setError(null)
     setLoading(true)

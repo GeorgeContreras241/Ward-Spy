@@ -18,7 +18,7 @@ export const riotRepository = {
         ),
     getMachtsIds: (puuid, key,page = 0) =>
         getDataPuuid(
-            `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${page}&count=10`,
+            `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${page}&count=8`,
             key
         ),
     getIdsMatchs: async (id, key) => {
