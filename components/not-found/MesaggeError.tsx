@@ -1,10 +1,11 @@
-export const MesaggeError = ({status, message}: {status: number | null, message: string}) => {
+export const MesaggeError = ({ status, message }: { status: number | null, message: string }) => {
+    console.log(status, message)
     return (
         <div className="flex items-center justify-center md:mt-20 mt-10 p-4">
             <div className="container mx-auto flex flex-col md:flex-row items-center justify-center gap-12">
                 <div className="text-center md:text-left">
-                    {status? <h1 className="md:text-8xl text-6xl font-bold text-blue-600 mb-4">{status}</h1> : null}
-                    <h2 className="md:text-3xl text-2xl font-semibold text-gray-300 mb-4">¡Ups! {message}</h2>
+                    <h1 className="md:text-8xl text-6xl font-bold text-blue-600 mb-4">{status}</h1>
+                    <h2 className="md:text-3xl text-2xl font-semibold text-gray-300 mb-4">¡Ups! Algo salio mal  </h2>
                     <p className="md:text-md text-sm text-gray-400 mb-6">Parece que has tomado un portal equivocado</p>
                     <a
                         href="/"
