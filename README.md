@@ -108,7 +108,7 @@ Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](LICENSE)
 
 ## 📧 Contacto
 
-¿Tienes preguntas? Contáctame en [georgecontreras241@gmail.com](mailto:georgecontreras241@gmail.com)
+¿Tienes preguntas? Contáctame en [maicolcontreras241@gmail.com](mailto:maicolcontreras241@gmail.com)
 
 ---
 
